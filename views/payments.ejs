@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="./styles/Payment.css">
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <header>
+        <h1>Payment</h1>
+    </header>
+    <div class="rowInd2">
+        <nav class = "menu">
+            <ul>
+                <li><a href="/cart">Cart</a></li>
+            </ul>
+        </nav>
+    </div>
+    <main class="container">
+        <div class = "ListOfIntems">
+            <div class="IndividualItem">
+                <input type="radio" id="CardRadio" name="paymentMethod" value="card" />
+                <label for="CardRadio">Card</label>
+                <div class="PayWith">
+                    <input class="innner" type="text" id="cardholderName" required placeholder="Cardholder Name" />
+                    <input class="innner" type="text" id="cardNumber" inputmode="numeric" pattern="\d{13,19}" maxlength="19" required placeholder="Card Number" />
+                    <input class="innner" type="month" id="expiryDate" required onfocus="this.type='month'" onblur="if(this.value==''){ this.type='text'; this.placeholder='Exp'; }" placeholder="Exp" />
+                    <input class="innner" type="password" id="cvv" inputmode="numeric" pattern="\d{3,4}" maxlength="4" required placeholder="CVV" />
+                    <input class="innner" type="email" id="email" pattern="^[a-zA-Z0-9.\-_]+@[a-zA-Z]+$" placeholder="Email" />
+                    <input class="innner" type="number" id="phoneNumber" inputmode="numeric" placeholder="Phone Number" />
+                    <button class="PayButton" onclick="payWithCard()">Pay Now</button>
+                </div>
+            </div>
+            <div class="IndividualItem">
+                <input type="radio" id="upiRadio" name="paymentMethod" value="upi" />
+                <label for="upiRadio">UPI</label>
+                <div class = "PayWith">
+                    <input class="innner" type="text" id="upiId" pattern="^[a-zA-Z0-9.\-_]+@[a-zA-Z]+$" required placeholder="Enter your UPI ID" />
+                    <button class="PayButton" onclick="payWithUPI()">Pay Now</button>
+                </div>
+            </div>
+            <div class = "IndividualItem">
+                <input type = "radio" id="NetRadio" name="paymentMethod" value="Net"/>
+                <label for="NetRadio">Net Banking</label>
+                    <div class="PayWith">
+                        <select class="innner inner_2" id="bank" required>
+                            <option value="">-- Select Bank --</option>
+                            <option value="HDFC">HDFC Bank</option>
+                            <option value="SBI">SBI Bank</option>
+                            <option value="ICICI">ICICI Bank</option>
+                            <option value="AXIS">AXIS Bank</option>
+                            <option value="KOTAK">KOTAK Bank</option>
+                            <option value="OTHER">other</option>
+                        </select>
+                        <!-- Customer ID / User ID (for login)
+                        Registered Mobile Number (optional, for OTP authentication) -->
+                        <button class="PayButton" onclick="payWithNetBanking()">Proceed to pay</button>
+                    </div>
+            </div>
+            <div class = "IndividualItem">
+                <input type = "radio" id="codRadio" name="paymentMethod" value="cod" />
+                <label for="codRadio">Cash on Delivery (COD)</label>
+                    <div class="PayWith">
+                        <button class="PayButton" onclick="placeCODOrder()">Place Order</button>
+                    </div>
+            </div>
+        </div>
+    </main>
+    <div class="rowSearchResults3">
+        <div class="store">
+            <footer class="footer">
+                <div class="copyright">
+                    <a href="/" class="logo"></a>
+                    <span>© <%= new Date().getFullYear() %> Your Website, Inc</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    function payWithCard() {
+        let codSelected = document.getElementById("CardRadio").checked;
+
+        if(!codSelected){
+            alert("Please select Card as your payment method.");
+            return;
+        }
+        let cardholderName = document.getElementById("cardholderName").value.trim();
+        let cardNumber = document.getElementById("cardNumber").value.replace(/\s/g, '');
+        let expiryDate = document.getElementById("expiryDate").value;
+        let cvv = document.getElementById("cvv").value;
+        let email = document.getElementById("email").value.trim();
+        let phoneNumber = document.getElementById("phoneNumber").value.trim();
+
+        if (!cardholderName) {
+            alert("Please enter the cardholder's name.");
+            return;
+        }
+
+        let cardPattern = /^\d{13,19}$/;
+        if (!cardPattern.test(cardNumber)) {
+            alert("Please enter a valid card number (13-19 digits).");
+            return;
+        }
+
+        let today = new Date();
+        let inputDate = new Date(expiryDate + "-01"); 
+        if (!expiryDate || inputDate < today) {
+            alert("Please enter a valid expiration date.");
+            return;
+        }
+
+        let cvvPattern = /^\d{3,4}$/;
+        if (!cvvPattern.test(cvv)) {
+            alert("Please enter a valid CVV (3 or 4 digits).");
+            return;
+        }
+
+        let emailPattern = /^[a-zA-Z0-9.\-_]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+        if (email && !emailPattern.test(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        let phonePattern = /^\d{10}$/;
+        if (phoneNumber && !phonePattern.test(phoneNumber)) {
+            alert("Please enter a valid 10-digit phone number.");
+            return;
+        }
+
+        alert("Payment processing...");
+
+        window.location.href = "payment-success.html";
+    }
+
+    function payWithUPI() {
+        let codSelected = document.getElementById("upiRadio").checked;
+        if(!codSelected){
+            alert("Please select UPI as your payment method.");
+            return;
+        }
+        let upiId = document.getElementById("upiId").value.trim();
+        
+        if (!upiId) {
+            alert("Please enter a valid UPI ID.");
+            return;
+        }
+    
+        let upiUrl = `upi://pay?pa=${upiId}&pn=YourStoreName&mc=1234&tid=TXN12345&tr=987654&tn=Order%20Payment&am=100&cu=INR`;
+    
+        window.location.href = upiUrl;
+    }
+
+    function payWithNetBanking(){
+        let codSelected = document.getElementById("NetRadio").checked;
+        if(!codSelected){
+            alert("Please select Net Banking as your payment method.");
+            return;
+        }
+        
+        let bank = document.getElementById("bank").value;
+        if(!bank){
+            alert("Please Select a bank.");
+            return;
+        }
+
+        let bankGatewayurl = `https://www.${bank.toLowerCase()}bank.com/netbanking`;
+        window.location.href = bankGatewayurl;
+    }
+
+    function placeCODOrder(){
+        let codSelected = document.getElementById("codRadio").checked;
+
+        if(!codSelected){
+            alert("Please select Cash on Delivery as your payment method.");
+            return;
+        }
+
+        alert("Your order has been placed successfully. Please pay cash upon delivery!");
+        window.location.href = "order-confirmation.html";
+    }
+</script>

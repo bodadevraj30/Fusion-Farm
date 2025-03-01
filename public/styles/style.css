@@ -1,0 +1,182 @@
+.menu {
+    margin-left: 2vw; /* Adjust the spacing from the left */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu ul li {
+    display: inline;
+    margin-right: 20px; /* Adjust the spacing between menu items */
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #f0f0f0;
+    font-size: 1.25rem;
+}
+
+.new_div button a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.rowInd1 {
+    height: 12vh;
+    background-color: #f0f0f0;
+    color: #008000;
+    display: flex;
+    justify-content: space-between; /* Updated to space-between */
+    align-items: center;
+    font-size: 200%;
+}
+
+.rowInd1 h1 {
+    margin: 0 auto;
+}
+
+.rowInd2 {
+    height: auto;
+    background-color: #008000; 
+    padding: 1vh 0;
+    overflow: hidden;
+    height: 4vh;
+    display: flex;   
+}
+
+#registerButton {
+    margin-left: auto; /* Pushes the login button to the right */
+    margin-right: 2vw;
+    background-color: #008000;
+    text-decoration: none;
+    border: none;
+    color: #f0f0f0;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+#loginButton {
+    background-color: #008000;
+    text-decoration: none;
+    border: none;
+    color: #f0f0f0;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+/* Adjustments to position the login button beside the register button */
+.container {
+    display: flex;
+    align-items: center; /* Optional: align items vertically in the center */
+}
+
+#loginButton {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+/* Optionally, you can add margins or padding between the buttons */
+#registerButton {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+
+.rowInd3 {
+    height: 67vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rowInd4 {
+    height: 15vh;
+    background-color: #f8f9fa;
+    padding: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.searchQuery {
+    width: 35vw;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+    background-color: #f8f8f8;
+    font-size: 16px;
+}
+
+.searchSubmitButton {
+    width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 4px;
+    background-color: #008000;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.footer p{
+    padding-left: 45%;
+    bottom: 0;
+}
+
+.logo {
+    text-decoration: none;
+    color: #212529;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.copyright span {
+    margin-left: 20px;
+}
+
+
+.rowSearchResults3 {
+    height: 15vh;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.logo {
+    text-decoration: none;
+    color: #212529;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.copyright span {
+    margin-left: 20px;
+}
+
+
+@media (max-width: 768px) {
+    .searchQuery {
+        width: 75vw;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    .searchQuery {
+        width: 60vw;
+    }
+}

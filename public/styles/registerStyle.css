@@ -1,0 +1,135 @@
+.menu {
+    margin-left: 2vw; /* Adjust the spacing from the left */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu ul li {
+    display: inline;
+    margin-right: 20px; /* Adjust the spacing between menu items */
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #f0f0f0;
+    font-size: 1.25rem;
+}
+
+.new_div button a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rowRegister1 {
+    height: 15vh;
+    background-color: white;
+    color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 200%;
+}
+
+.rowRegister4 {
+    height: auto;
+    background-color: #008000; 
+    padding: 1vh 0;
+    overflow: hidden;
+    height: 4vh;
+    display: flex;  
+}
+
+#loginButton {
+    margin-left: auto; /* Pushes the login button to the right */
+    padding-left: 70ic;
+    margin-right: 2vw;
+    background-color: #008000;
+    text-decoration: none;
+    border: none;
+    color: #f0f0f0;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+#loginButton {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.rowRegister2 {
+    flex: 1; /* Allow rowRegister2 to expand and fill the available space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Add some spacing between rows if needed */
+}
+
+.rowRegister3 {
+    height: 15vh;
+    background-color: #f8f9fa;
+}
+
+.registerInput, #user_type {
+    width: 35vw; /* Increase the width to 80% */
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+    background-color: #f8f8f8;
+    font-size: 16px;
+}
+
+#user_type {
+    margin-bottom: 3vh;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.logo {
+    text-decoration: none;
+    color: #212529;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.copyright span {
+    margin-left: 20px;
+}
+
+.signUpSubmitButton {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 4px;
+    background-color: green;
+    color: white;
+    font-size: 16px;
+    cursor: pointer; 
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 550px) {
+    .registerInput {
+        width: 75vw;
+    }
+}

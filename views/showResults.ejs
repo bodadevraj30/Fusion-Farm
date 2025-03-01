@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="/styles/showResultsStyle.css" />
+    <title>Wrapper Example</title>
+</head>
+<body>
+    <div class="rowSearchResults rowSearchResults1">
+        <div class="container">
+            <h1>FusionFarm</h1>
+        </div>
+    </div>
+    <div class="rowSearchResults rowSearchResults4">
+        <!-- Remove empty nav tag -->
+    </div>
+    <div class="rowSearchResults rowSearchResults2">
+        <div class="container">
+            <div class="filters">
+                
+            </div>
+            <div class="searchResults">
+                <% try { %>
+                    <% results.forEach(function(result) { %>
+                        <div class="entry">
+                            <div class="content">
+                                <div class="imageContainer">
+                                    <!-- You can add an image if available in your data -->
+                                    <img src="/Images/loading.png" class="groceryImage" />
+                                </div>
+                                <div class="resultText">
+                                    <div class="contents1">
+                                        <p class="heading"><%= result.name %></p>
+                                        <p class="vendorName"><%= result.seller_name %></p>
+                                        <p class="address"><%= result.mandal %> - <%= result.pincode %></p>
+                                        <p class="phoneNumber"><%= result.phone_number %></p>
+                                    </div>
+                                    <div class="contents2">
+                                        <p class="price">Price: ₹<%= result.price %></p>
+                                        <p class="weight"><%= result.rentSale %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>  
+                <% } catch (error) { %>
+                    <!-- Handle any errors related to iterating through the results array -->
+                    <p>Error iterating through results.</p>
+                <% } %>
+            </div>                     
+        </div>
+    </div>
+    <div class="rowSearchResults3">
+        <div class="store">
+            <footer class="footer">
+                <div class="copyright">
+                    <a href="/" class="logo"></a>
+                    <span>© <%= new Date().getFullYear() %> Your Website, Inc</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

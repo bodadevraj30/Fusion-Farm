@@ -1,0 +1,15 @@
+Farmer: Name, Password, Address(Distict, Mandal, village/city, H-No, Pincode), PhoneNo(primary key) 
+Customer: Name, Password, Address(Distict, Mandal, village/city, H-No, Pincode), PhoneNo(primary key) 
+ARD: Name, Password, Address(Distict, Mandal, village/city, H-No, Pincode), PhoneNo(primary key)
+Dealer: Name, Password, Address(Distict, Mandal, village/city, H-No, Pincode), PhoneNo(primary key)
+Crops: NameOfCrope(primary key), Quantity, Rate, By(phoneNo)(primary Key) 
+Fetilizer/pesticides: Type(primary key), quantity, Rate,,By(phoneNo)(primary Key) 
+Seeds: Type(primary key), quantity, rate, By(phoneNo)(primary Key)
+Machines: Type(primary key), rent(rate per day/hour)/sell(rate), Rate, Related details, By(phoneNo)(primary Key)
+
+Note:
+1. Rate has to modify day by day
+2. How much area can he go
+3. If a fram has 20kg of crop, then how he place in crops section that 1kg is equal to
+
+ 

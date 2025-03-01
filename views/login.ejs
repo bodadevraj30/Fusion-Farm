@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/loginStyle.css">
+    <title>GrossFresh</title>
+</head>
+
+<body>
+
+    <div class="rowLogin1">
+        <h1>FusionFarm</h1>
+    </div>
+    <div class="rowLogin4">
+        <nav class="menu">
+            <div class="new_div">
+                <button id="registerButton"><a href="/register">Register</a></button> 
+            </div>
+        </nav>
+    </div>  
+    <div class="rowLogin2">
+        <form action="/login" method="POST" id="loginForm">
+            <select name="user_type" id="user_type" class="loginForm">
+                <option value="ARD">ARD</option>
+                <option value="AMD">AMD</option>
+                <option value="Customer">Customer</option>
+                <option value="Farmer">Farmer</option>
+            </select>
+            <input type="tel" name="phoneNumber" id="PhoneNumber" class="loginphoneNumbertext loginForm" placeholder="phone Number">
+            <input type="password" name="password" id="password" class="loginPasswordText loginForm" placeholder="Password">
+            <input type="submit" class="loginSubmitButton" value="Submit">
+            <p class="signUp">Don't have an account? <button class="signUpButton"><a href="/register">Sign up</a></button></p>
+        </form>
+    </div>
+    <div class="footer">
+        <p>© <%= year %> Your Website, Inc</p>
+    </div>
+</body>
+
+</html>

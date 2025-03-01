@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/ard.css">
+    <title>ARD Dashboard</title>
+</head>
+
+<body>
+    <div class="rowInd1">
+        <h1>FusionFarm</h1>
+        
+    </div>
+    <div class="rowInd2">
+        <nav class="menu">
+            <% if (isLoggedIn) { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/profile">Profile</a></button>
+                    <button id="registerButton"><a href="/logout">Log out</a></button> 
+                </div>
+            <% } else { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/login">Login</a></button>
+                    <button id="registerButton"><a href="/register">Register</a></button> 
+                </div>
+            <% } %>
+        </nav>
+    </div>    
+    <div class="rowInd3">
+        <!-- Form for uploading seeds -->
+    <form class="seeds but" action="/upload/seeds" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" required> <!-- Update the name attribute to match the field expected by Multer -->
+        <input type="text" name="name" placeholder="Seed Name" required>
+        <input type="text" name="company" placeholder="Company" required>
+        <input type="number" name="price" placeholder="Price" step="0.01" required>
+        <input type="number" name="weight" placeholder="Weight" step="0.01" required>
+        <input type="number" name="bags" placeholder="Bags" step="1">
+        <button type="submit">Submit</button>
+    </form>
+
+        <!-- Form for uploading pesticides -->
+        <form class="pesticides but" action="/upload/pesticides" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <input type="text" name="name" placeholder="Pesticide Name" required>
+            <input type="text" name="company" placeholder="Company" required>
+            <input type="number" name="price" placeholder="Price" step="0.01" required>
+            <input type="number" name="weight" placeholder="Weight" step="0.01" required>
+            <input type="number" name="bags" placeholder="Bags" step="1">
+            <textarea class = "desc" name="description" placeholder="Description"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Form for uploading fertilizers -->
+        <form class="fertilizers but" action="/upload/fertilizers" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <input type="text" name="name" placeholder="Fertilizer Name" required>
+            <input type="text" name="company" placeholder="Company" required>
+            <input type="number" name="price" placeholder="Price" step="0.01" required>
+            <input type="number" name="weight" placeholder="Weight" step="0.01" required>
+            <input type="number" name="bags" placeholder="Bags" step="1">
+            <textarea class = "desc" name="description" placeholder="Description"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <p class="footer">© <%= year %> Your Website, Inc</p>
+
+</body>
+</html>

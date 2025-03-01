@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="/styles/showResultsStyle.css" />
+    <title>Seeds</title>
+</head>
+<body> 
+    <div class="rowSearchResults rowSearchResults1">
+        <div class="container">
+            <h1>FusionFarm</h1>
+        </div>
+    </div>
+    <div class="rowSearchResults rowSearchResults4">
+        <nav class="menu">
+            <ul>
+                <li><a href="/farmer">Home</a></li>
+                <li><a href="/farmer/Fertilizers">Fertilizers</a></li>
+                <li><a href="/farmer/Pesticides">Pesticides</a></li>
+                <li><a href="/farmer/Machinerys">Machinerys</a></li>
+                <li><a href="/farmer_upload">upload</a></li>
+                <li><a href="/cart">Cart</a></li>
+            </ul>
+            <form action="/search" method="GET" class="search-form">
+                <input type="text" name="query" placeholder="Search products..." required>
+                <input type="hidden" name="category" value="seeds">
+                <button type="submit">search</button>
+            </form>            
+            <% if (isLoggedIn) { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/profile">Profile</a></button>
+                    <button id="registerButton"><a href="/logout">Log out</a></button> 
+                </div>
+            <% } else { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/login">Login</a></button>
+                    <button id="registerButton"><a href="/register">Register</a></button> 
+                </div>
+            <% } %>
+        </nav>
+    </div>
+    <div class="rowSearchResults rowSearchResults2">
+        <div class="container">
+            <div class="filters">
+                
+            </div>
+            <div class="searchResults">
+                <% try { %>
+                    <% seeds.forEach(function(seed) { %>
+                        <div class="entry">
+                            <div class="content">
+                                <div class="imageContainer">
+                                    <!-- You can add an image if available in your data -->
+                                    <img src="/Images/loading.png" class="groceryImage" />
+                                </div>
+                                <div class="resultText">
+                                    <div class="contents1">
+                                        <p class="heading"><%= seed.name %></p>
+                                        <p class="vendorName"><%= seed.seller_name %></p>
+                                        <p class="address"><%= seed.mandal %> - <%= seed.pincode %></p>
+                                        <p class="phoneNumber"><%= seed.phone_number %></p>
+                                    </div>
+                                    <div class="contents2">
+                                        <p class="price">Price: ₹<%= seed.price %> / kg</p>
+                                        <p class="weight">Weight: <%= seed.weight %> Kg</p>
+                                        <button class="addToCart" onclick="addToCart('<%= seed.name %>', '<%= seed.price %>')">Add To Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>                    
+                <% } catch (error) { %>
+                    <!-- Handle any errors related to iterating through the seeds array -->
+                    <p>No results found.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="rowSearchResults3">
+        <div class="store">
+            <footer class="footer">
+                <div class="copyright">
+                    <a href="/" class="logo"></a>
+                    <span>© <%= new Date().getFullYear() %> Your Website, Inc</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script>
+        // Define productType as a global variable
+        var productType = '<%= productType %>';
+        
+        // Function to add item to cart
+        function addToCart(itemName, price) {
+        // Extract the product type from the URL
+        const productType = window.location.pathname.split('/')[2];
+        
+        // Send a POST request to add the item to the cart
+        fetch(`/add-to-cart/${productType}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                itemName: itemName,
+                price: price
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Item added to cart successfully!');
+            } else {
+                alert('Failed to add item to cart.');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding item to cart:', error);
+            alert('Error adding item to cart.');
+        });
+    }
+
+    </script>        
+</body>
+</html>

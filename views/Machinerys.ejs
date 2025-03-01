@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="/styles/showResultsStyle.css" />
+    <title>Machinery</title>
+</head>
+<body>
+    <div class="rowSearchResults rowSearchResults1">
+        <div class="container">
+            <h1>FusionFarm</h1>
+        </div>
+    </div>
+    <div class="rowSearchResults rowSearchResults4">
+        <nav class="menu">
+            <ul>
+                <li><a href="/farmer">Home</a></li>
+                <li><a href="/farmer/seeds">Seeds</a></li>
+                <li><a href="/farmer/Fertilizers">Fertilizers</a></li>
+                <li><a href="/farmer/Pesticides">Pesticides</a></li>
+                <li><a href="/farmer_upload">upload</a></li>
+                <li><a href="/cart">Cart</a></li>
+            </ul>
+            <form action="/search" method="GET" class="search-form">
+                <input type="text" name="query" placeholder="Search products..." required>
+                <input type="hidden" name="category" value="machinery">
+                <button type="submit">Search</button>
+            </form>            
+            <% if (isLoggedIn) { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/profile">Profile</a></button>
+                    <button id="registerButton"><a href="/logout">Log out</a></button> 
+                </div>
+            <% } else { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/login">Login</a></button>
+                    <button id="registerButton"><a href="/register">Register</a></button> 
+                </div>
+            <% } %>
+        </nav>
+    </div>
+    <div class="rowSearchResults rowSearchResults2">
+        <div class="container">
+            <div class="filters">
+                
+            </div>
+            <div class="searchResults">
+                <% try { %>
+                    <% Machinerys.forEach(function(machine) { %>
+                        <div class="entry">
+                            <div class="content">
+                                <div class="imageContainer">
+                                    <!-- You can add an image if available in your data -->
+                                    <img src="/Images/loading.png" class="groceryImage" />
+                                </div>
+                                <div class="resultText">
+                                    <div class="contents1">
+                                        <p class="heading"><%= machine.name %></p>
+                                        <p class="vendorName"><%= machine.seller_name %></p>
+                                        <p class="address"><%= machine.mandal %> - <%= machine.pincode %></p>
+                                        <p class="phoneNumber"><%= machine.phone_number %></p>
+                                    </div>
+                                    <div class="contents2">
+                                        <p class="price">Price: ₹<%= machine.price %></p>
+                                        <p class="weight"><%= machine.rentSale %></p>
+                                        <button class="addToCart">Add To Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    <% }); %>                    
+                <% } catch (error) { %>
+                    <!-- Handle any errors related to iterating through the Machines array -->
+                    <p>Error iterating through machines.</p>
+                <% } %>
+            </div>
+            
+            
+                                 
+        </div>
+    </div>
+    <div class="rowSearchResults3">
+        <div class="store">
+            <footer class="footer">
+                <div class="copyright">
+                    <a href="/" class="logo"></a>
+                    <span>© <%= new Date().getFullYear() %> Your Website, Inc</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

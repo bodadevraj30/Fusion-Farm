@@ -1,0 +1,106 @@
+.new_div {
+    display: flex;
+    margin-left: auto;
+}
+
+.footer{
+    padding-top: 2.5vh;
+    padding-left: 1vw;
+    border-top: 1px solid;
+    border-color: rgb(175, 175, 175);
+    margin-left: auto;
+}
+
+
+.upload_machinery {
+    border-radius: 5px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 55vh;
+    width: 50vw;
+    background-color: green;
+}
+
+.upload_machinery input {
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.75rem;
+    padding-top: 0.75rem;
+    padding-left: 1rem;
+    width: 40vw;
+}
+
+.upload_machinery select {
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 2px;
+    border: none;
+    margin-bottom: 0.5rem;
+}
+
+.upload_machinery textarea {
+    padding-top: 0.75rem;
+    padding-left: 1rem;
+    border-radius: 5px;
+    border: none;
+    padding-bottom: 10%;
+    margin-bottom: 0.5rem;
+    width: 80%;
+}
+
+.upload_machinery button{
+    border: none;
+    font-weight: 700;
+    font-size: medium;
+    background-color: blue;
+    color: aliceblue;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.upload_machinery button:hover{
+    cursor: pointer;
+}
+
+.upload_machinery button {
+    background-color: green;
+    color: #fff;
+    border: solid; 
+    border-radius:10px; 
+    padding:15px;
+    min-height:30px; 
+    min-width: 120px;
+}
+
+.upload_machinery button:focus {
+    outline-color: transparent;
+    outline-style:solid;
+    box-shadow: 0 0 0 4px #5a01a7;
+}
+
+.rowSearchResults3 {
+    height: 15vh;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.logo {
+    text-decoration: none;
+    color: #212529;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.copyright span {
+    margin-left: 20px;
+}

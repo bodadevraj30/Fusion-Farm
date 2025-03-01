@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="./styles/cart.css">
+    <link rel="stylesheet" href="./styles/style.css">
+
+    <style>
+        .container {
+            text-align: center; 
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            width: auto; 
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            width: auto; 
+            min-width: 10vw;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+
+</head>
+<body>
+    <header>
+        <h1>Shopping Cart</h1>
+    </header>
+    <div class="rowInd2">
+        <nav class = "menu">
+            <ul>
+                <li><a href=""></a></li>
+            </ul>
+        </nav>
+    </div>
+    <main>
+        <div class="cart-items">
+            <table>
+                <% if (cart.length > 0) { %>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <% } %>
+                <tbody>
+                    <% let totalPrice = 0; %>
+                    <% for (let i = 0; i < cart.length; i++) { %>
+                        <tr>
+                            <td><%= cart[i].item_name %></td>
+                            <td><%= cart[i].price %></td>
+                            <td><%= new Date(cart[i].date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %></td>
+                        </tr>
+                        <% totalPrice += cart[i].price; %>
+                    <% } %>                
+                </tbody>
+            </table>
+        </div>
+        <div class="cart-total">
+            <h2>Total: <%= totalPrice.toFixed(2) %></h2>
+            <button><a href="/payments" style="color: white; text-decoration: none;;">Buy</a></button>
+        </div>
+    </main>
+    <div class="rowSearchResults3">
+        <div class="store">
+            <footer class="footer">
+                <div class="copyright">
+                    <a href="/" class="logo"></a>
+                    <span>© <%= new Date().getFullYear() %> Your Website, Inc</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

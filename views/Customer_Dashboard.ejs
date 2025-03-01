@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/style.css">
+    <title>Search Page</title>
+</head>
+
+<body>
+    <div class="rowInd1">
+        <h1>FusionFarm</h1>
+        
+    </div>
+    <div class="rowInd2">
+        <nav class="menu">
+            <ul>
+                <li><a href="/customer/Vegitables">Vegitables</a></li>
+                <li><a href="/cart">cart</a></li>
+            </ul>
+            <% if (isLoggedIn) { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/profile">Profile</a></button>
+                    <button id="registerButton"><a href="/login">Log out</a></button> 
+                </div>
+            <% } else { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/login">Login</a></button>
+                    <button id="registerButton"><a href="/register">Register</a></button> 
+                </div>
+            <% } %>
+        </nav>
+    </div>    
+    <div class="rowInd3">
+        <form action="/showResults" method="post">
+            <input type="text" class="searchQuery" name="searchQuery" placeholder="Search" required>
+            <button type="submit" class="searchSubmitButton">Search</button>
+        </form>
+    </div>
+    <div class="rowSearchResults3">
+        <div class="store">
+            <footer class="footer">
+                <div class="copyright">
+                    <a href="/" class="logo"></a>
+                    <span>© <%= new Date().getFullYear() %> Your Website, Inc</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>

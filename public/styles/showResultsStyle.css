@@ -1,0 +1,263 @@
+.menu {
+    margin-left: 2vw; /* Adjust the spacing from the left */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu ul li {
+    display: inline;
+    margin-right: 20px; /* Adjust the spacing between menu items */
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #f0f0f0;
+    font-size: 1.25rem;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.container {
+    display: flex;
+    padding: 1vh 0;
+}
+
+.filters {
+    flex: 1;
+    padding: 1vw;
+    height: 25vh;
+}
+
+.searchResults {
+    flex: 3;
+    width: 100%;
+}
+
+.entry {
+    width: 100%;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    padding: 1vw;
+    background-color: #F5F5F5;
+    height: 32vh;
+}
+
+.rowSearchResults {
+    height: 15vh;
+}
+
+.rowSearchResults1 {
+    background-color: white;
+    color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.rowSearchResults4 {
+    height: auto;
+    background-color: #008000; 
+    padding: 1vh 0;
+    overflow: hidden;
+    height: 4vh;
+    display: flex;   
+}
+
+.new_div button a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+#loginButton {
+    margin-left: auto; 
+    margin-right: 2vw;
+    background-color: #008000;
+    text-decoration: none;
+    border: none;
+    color: #f0f0f0;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+#registerButton {
+    margin-left: auto; /* Pushes the login button to the right */
+    margin-right: 2vw;
+    background-color: #008000;
+    text-decoration: none;
+    border: none;
+    color: #f0f0f0;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.rowSearchResults2 {
+    flex: 1;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    width: 80%;
+    margin: 0 auto;
+}
+
+#loginButton {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+/* Optionally, you can add margins or padding between the buttons */
+#registerButton {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.addToCart {
+    border: none;
+    margin-top: 4vh;
+    
+}
+
+.addToCart:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.rowSearchResults3 {
+    height: 15vh;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.logo {
+    text-decoration: none;
+    color: #212529;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.copyright span {
+    margin-left: 20px;
+}
+
+.entry .content {
+    display: flex;
+    height: 100%;
+}
+
+.groceryImage {
+    height: 100%;
+    margin-right: 2vw;
+}
+
+.entry p {
+    flex: 1;
+}
+
+.resultText {
+    width: 100%;
+    display: flex;
+}
+
+.contents1 {
+    flex: 1;
+}
+
+.contents2 {
+    flex: 1;
+    align-self: center;
+    text-align: right;
+    padding-right: 5vw;
+}
+
+.imageContainer {
+    width: 30vw;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    margin-right: 2rem;
+}
+
+.heading {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 0.5em;
+}
+
+.vendorName, .address, .phoneNumber, .price, .weight, .addToCart{
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 0.3em;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.search-form input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.search-form button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #218838;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .filters {
+        display: none;
+    }
+
+    .searchResults {
+        flex: 1;
+    }
+
+    .heading {
+        font-size: 1.25em;
+    }
+    
+    .vendorName, .address, .phoneNumber, .price, .weight {
+        font-size: 0.6em;
+    }
+
+    
+}
+
+@media only screen and (max-width: 576px) {
+    .resultText {
+        width: 100%;
+        display: block;
+    }
+
+    .contents2 {
+        text-align: left;
+    }
+ }

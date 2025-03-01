@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./styles/reset.css">
+	<link rel="stylesheet" href="./styles/registerStyle.css">
+	<title>Signup Form</title>
+</head>
+<body>
+	<div class="rowRegister1">
+		<h1>FusionFarm</h1>
+	</div>
+	<div class="rowRegister4">
+        <nav class="menu">
+            <div class="new_div">
+                <button id="loginButton"><a href="/login">Login</a></button> 
+            </div>
+        </nav>
+    </div>  
+	<div class="rowRegister2">
+		<form action="/register" method="post">
+			<select name="user_type" id="user_type" class="loginForm">
+                <option value="ARD">ARD</option>
+                <option value="AMD">AMD</option>
+                <option value="Customer">Customer</option>
+                <option value="Farmers">Farmers</option>
+            </select>
+			<input type="text" id="name" name="Name" class="registerInput" placeholder="Name" required><br>
+			<input type="password" id="password" name="Password" class="registerInput" placeholder="Password" required><br>
+			<input type="password" id="reenterPassword" name="ReenterPassword" class="registerInput" placeholder="Re-enter Password" required><br>
+			<input type="tel" id="phoneNumber" name="PhoneNumber" class="registerInput" placeholder="Phone Number" required><br>
+			<input type="text" id="address" name="HNo" class="registerInput" placeholder="HNo" required><br>
+			<input type="text" id="address" name="Street" class="registerInput" placeholder="Street" required><br>
+			<input type="text" id="address" name="Mandal" class="registerInput" placeholder="Mandal" required><br>
+			<input type="text" id="address" name="District" class="registerInput" placeholder="District" required><br>
+			<input type="text" id="address" name="State" class="registerInput" placeholder="State" required><br>
+			<input type="text" id="address" name="Landmark" class="registerInput" placeholder="Landmark" required><br>
+			<input type="text" id="address" name="Pincode" class="registerInput" placeholder="Pin Code" required><br>
+			<input type="submit" class="signUpSubmitButton" value="Sign Up">
+		</form>
+	</div>
+	<div class="footer">
+        <p>© <%= year %> Your Website, Inc</p>
+    </div>
+
+</body>
+</html>
