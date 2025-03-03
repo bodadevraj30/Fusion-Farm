@@ -52,7 +52,7 @@ const isLoggedIn = (req, res, next) => {
 };
 
 // Route for ARD Dashboard
-router.get('/ARD', isLoggedIn, (req, res) => {
+router.get('/ard', isLoggedIn, (req, res) => {
     // Logic to render the AMD dashboard
     res.render('Ard_Dashboard', { isLoggedIn: true });
 });

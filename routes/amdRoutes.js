@@ -51,7 +51,7 @@ const isLoggedIn = (req, res, next) => {
 };
 
 // Route for AMD Dashboard
-router.get('/AMD', isLoggedIn, (req, res) => {
+router.get('/ard', isLoggedIn, (req, res) => {
     // Logic to render the AMD dashboard
     res.render('Amd_Dashboard', { isLoggedIn: true });
 });
@@ -79,7 +79,7 @@ function handleMachineryUpload(req, res) {
     }
 
     // Insert the machinery data into the database
-    const sql = 'INSERT INTO Machinery (phone_number, name, company, price, description, rentSale) VALUES (?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO machinery (phone_number, name, company, price, description, rentSale) VALUES (?, ?, ?, ?, ?, ?)';
     const values = [phone_number, name, company, price, description, rentSale]; // Assuming req.file contains filename
 
     db.query(sql, values, (err, result) => {

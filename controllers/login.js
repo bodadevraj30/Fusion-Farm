@@ -17,19 +17,19 @@ router.post('/login', (req, res) => {
     // Determine the table name and dashboard route based on the user type
     switch (user_type) {
         case 'Farmer':
-            tableName = 'Farmers';
+            tableName = 'farmers';
             dashboardRoute = '/farmer'; // Set the dashboard route for Farmer
             break;
         case 'Customer':
-            tableName = 'Customer';
+            tableName = 'customer';
             dashboardRoute = '/customer'; // Set the dashboard route for Customer
             break;
         case 'ARD':
-            tableName = 'ARD';
+            tableName = 'ard';
             dashboardRoute = '/ARD'; // Set the dashboard route for ARD
             break;
         case 'AMD':
-            tableName = 'AMD';
+            tableName = 'amd';
             dashboardRoute = '/AMD'; // Set the dashboard route for AMD
             break;
         default:

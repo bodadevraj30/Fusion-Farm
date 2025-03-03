@@ -33,10 +33,10 @@ app.use(session({
 
 // MySQL connection configuration
 const db = mysql.createConnection({
-    host: 'localhost',
+    host: 'fusionfarm.czyqa0eceppw.ap-south-1.rds.amazonaws.com',
     user: 'root',
-    password: 'devrajboda',
-    database: 'FusionFarm'
+    password: 'bodaDEV1234',
+    database: 'fusionfarm_db'
 });
 
 // Connect to MySQL

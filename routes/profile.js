@@ -31,14 +31,14 @@ router.post('/profile', async (req, res) => {
     const phone_number = req.session.user.phone_number;  // Retrieve phone number
 
     const updateAddressQuery = `
-      UPDATE Address
+      UPDATE address
       SET H_No = ?, village_city = ?, Mandal = ?, District = ?, State = ?, Landmark = ?, Pincode = ?
       WHERE phone_number = ?`;
     const addressValues = [HNo, village_city, Mandal, District, State, Landmark, Pincode, phone_number];
     await db.query(updateAddressQuery, addressValues);
 
     let userType = '';
-    const userTables = ['Farmers', 'Customer', 'ARD', 'AMD'];
+    const userTables = ['farmers', 'customer', 'ard', 'amd'];
     for (const table of userTables) {
       const countQuery = `SELECT COUNT(*) as count FROM ${table} WHERE phone_number = ?`;
       const result = await db.query(countQuery, [phone_number]);

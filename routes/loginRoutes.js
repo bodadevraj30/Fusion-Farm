@@ -21,15 +21,15 @@ router.post('/login', (req, res) => {
             dashboardRoute = '/farmer'; // Set the dashboard route for Farmer
             break;
         case 'Customer':
-            tableName = 'Customer';
+            tableName = 'customer';
             dashboardRoute = '/customer'; // Set the dashboard route for Customer
             break;
         case 'ARD':
-            tableName = 'ARD';
+            tableName = 'ard';
             dashboardRoute = '/ARD'; // Set the dashboard route for ARD
             break;
         case 'AMD':
-            tableName = 'AMD';
+            tableName = 'ard';
             dashboardRoute = '/AMD'; // Set the dashboard route for AMD
             break;
         default:

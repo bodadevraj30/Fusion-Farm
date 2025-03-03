@@ -14,7 +14,7 @@ router.get('/cart', (req, res) => {
 
     // Fetch cart items for the logged-in user
     const buyerPhoneNo = req.session.user.phone_number;
-    const sql = 'SELECT item_name, date, price FROM Cart WHERE buyer_phone_no = ?';
+    const sql = 'SELECT item_name, date, price FROM cart WHERE buyer_phone_no = ?';
 
     db.query(sql, [buyerPhoneNo], (err, results) => {
         if (err) {

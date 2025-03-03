@@ -69,18 +69,18 @@ router.get('/farmer/seeds', isLoggedIn, (req, res) => {
     // Query the database to retrieve data from the seeds table
     const sql = `SELECT 
         S.name AS name,
-        ARD.name AS seller_name,
+        ard.name AS seller_name,
         A.Mandal AS mandal,
         A.Pincode AS pincode,
         S.phone_number AS phone_number,
         S.price AS price,
         S.weight AS weight
     FROM 
-        Seeds S
+        seeds S
     JOIN 
-        ARD ON S.phone_number = ARD.phone_number
+        ard ON S.phone_number = ard.phone_number
     JOIN 
-        Address A ON S.phone_number = A.phone_number`;
+        address A ON S.phone_number = A.phone_number`;
     
     db.query(sql, (err, results) => {
         if (err) {
@@ -105,16 +105,16 @@ router.get('/farmer/fertilizers', isLoggedIn, (req, res) => {
         F.price AS price,
         F.weight AS weight,
         F.bags AS bags,
-        ARD.name AS seller_name,
-        Address.Mandal AS mandal,
-        Address.Pincode AS pincode,
+        ard.name AS seller_name,
+        address.Mandal AS mandal,
+        address.Pincode AS pincode,
         F.phone_number AS phone_number
     FROM 
-        Fertilizers F
+        fertilizers F
     JOIN 
-        ARD ON F.phone_number = ARD.phone_number
+        ard ON F.phone_number = ard.phone_number
     JOIN 
-        Address ON F.phone_number = Address.phone_number`;
+        address ON F.phone_number = address.phone_number`;
     
     db.query(sql, (err, results) => {
         if (err) {
@@ -139,16 +139,16 @@ router.get('/farmer/pesticides', isLoggedIn, (req, res) => {
         P.price AS price,
         P.weight AS weight,
         P.bags AS bags,
-        ARD.name AS seller_name,
-        Address.Mandal AS mandal,
-        Address.Pincode AS pincode,
+        ard.name AS seller_name,
+        address.Mandal AS mandal,
+        address.Pincode AS pincode,
         P.phone_number AS phone_number
     FROM 
-        Pesticides P
+        pesticides P
     JOIN 
-        ARD ON P.phone_number = ARD.phone_number
+        ard ON P.phone_number = ard.phone_number
     JOIN 
-        Address ON P.phone_number = Address.phone_number`;
+        address ON P.phone_number = address.phone_number`;
     
     db.query(sql, (err, results) => {
         if (err) {
@@ -173,16 +173,16 @@ router.get('/farmer/Machinerys', isLoggedIn, (req, res) => {
         M.company AS company,
         M.price AS price,
         M.rentSale AS rentSale,
-        AMD.name AS seller_name,
-        Address.Mandal AS mandal,
-        Address.Pincode AS pincode,
+        amd.name AS seller_name,
+        address.Mandal AS mandal,
+        address.Pincode AS pincode,
         M.phone_number AS phone_number
     FROM 
-        Machinery M
+        machinery M
     JOIN 
-        AMD ON M.phone_number = AMD.phone_number
+        amd ON M.phone_number = amd.phone_number
     JOIN 
-        Address ON M.phone_number = Address.phone_number`;
+        address ON M.phone_number = address.phone_number`;
     
     db.query(sql, (err, results) => {
         if (err) {
@@ -223,7 +223,7 @@ function handleCropUpload(req, res) {
     const image = req.file.filename;
 
     // Insert crop data into the database
-    const sql = 'INSERT INTO Crop (phone_number, name, quantity, price) VALUES (?, ?, ?, ?)';
+    const sql = 'INSERT INTO crop (phone_number, name, quantity, price) VALUES (?, ?, ?, ?)';
     const values = [phone_number, name, quantity, price];
 
     db.query(sql, values, (err, result) => {
@@ -253,18 +253,18 @@ router.get('/search', (req, res) => {
             sql = `
                 SELECT 
                 S.name AS name,
-                ARD.name AS seller_name,
+                ard.name AS seller_name,
                 A.Mandal AS mandal,
                 A.Pincode AS pincode,
                 S.phone_number AS phone_number,
                 S.price AS price,
                 S.weight AS weight
                 FROM 
-                    Seeds S
+                    seeds S
                 JOIN 
-                    ARD ON S.phone_number = ARD.phone_number
+                    ard ON S.phone_number = ard.phone_number
                 JOIN 
-                    Address A ON S.phone_number = A.phone_number
+                    address A ON S.phone_number = A.phone_number
                 WHERE 
                     S.name LIKE ?`;
             template = "seeds";
@@ -280,16 +280,16 @@ router.get('/search', (req, res) => {
                 F.price AS price,
                 F.weight AS weight,
                 F.bags AS bags,
-                ARD.name AS seller_name,
-                Address.Mandal AS mandal,
-                Address.Pincode AS pincode,
+                ard.name AS seller_name,
+                address.Mandal AS mandal,
+                address.Pincode AS pincode,
                 F.phone_number AS phone_number
                 FROM 
-                    Fertilizers F
+                    fertilizers F
                 JOIN 
-                    ARD ON F.phone_number = ARD.phone_number
+                    ard ON F.phone_number = ard.phone_number
                 JOIN 
-                    Address ON F.phone_number = Address.phone_number
+                    address ON F.phone_number = address.phone_number
                 WHERE 
                     F.name LIKE ?`;
             template = "fertilizers";
@@ -305,16 +305,16 @@ router.get('/search', (req, res) => {
                 P.price AS price,
                 P.weight AS weight,
                 P.bags AS bags,
-                ARD.name AS seller_name,
-                Address.Mandal AS mandal,
-                Address.Pincode AS pincode,
+                ard.name AS seller_name,
+                address.Mandal AS mandal,
+                address.Pincode AS pincode,
                 P.phone_number AS phone_number
                 FROM 
-                    Pesticides P
+                    pesticides P
                 JOIN 
-                    ARD ON P.phone_number = ARD.phone_number
+                    ard ON P.phone_number = ard.phone_number
                 JOIN 
-                    Address ON P.phone_number = Address.phone_number 
+                    address ON P.phone_number = address.phone_number 
                 WHERE 
                     P.name LIKE ?`;
             template = "pesticides";
@@ -329,16 +329,16 @@ router.get('/search', (req, res) => {
                 M.company AS company,
                 M.price AS price,
                 M.rentSale AS rentSale,
-                AMD.name AS seller_name,
-                Address.Mandal AS mandal,
-                Address.Pincode AS pincode,
+                amd.name AS seller_name,
+                address.Mandal AS mandal,
+                address.Pincode AS pincode,
                 M.phone_number AS phone_number
                 FROM 
-                    Machinery M
+                    machinery M
                 JOIN 
-                    AMD ON M.phone_number = AMD.phone_number
+                    amd ON M.phone_number = amd.phone_number
                 JOIN 
-                    Address ON M.phone_number = Address.phone_number
+                    address ON M.phone_number = address.phone_number
                 WHERE 
                     M.name LIKE ?`;
             template = "machinery";
@@ -349,18 +349,18 @@ router.get('/search', (req, res) => {
             sql = `
                 SELECT 
                 S.name AS name,
-                ARD.name AS seller_name,
+                ard.name AS seller_name,
                 A.Mandal AS mandal,
                 A.Pincode AS pincode,
                 S.phone_number AS phone_number,
                 S.price AS price,
                 S.weight AS weight
                 FROM 
-                    Seeds S
+                    seeds S
                 JOIN 
-                    ARD ON S.phone_number = ARD.phone_number
+                    ard ON S.phone_number = ard.phone_number
                 JOIN 
-                    Address A ON S.phone_number = A.phone_number
+                    address A ON S.phone_number = A.phone_number
                 WHERE 
                     S.name LIKE ?
                 UNION
@@ -371,16 +371,16 @@ router.get('/search', (req, res) => {
                 F.price AS price,
                 F.weight AS weight,
                 F.bags AS bags,
-                ARD.name AS seller_name,
-                Address.Mandal AS mandal,
-                Address.Pincode AS pincode,
+                ard.name AS seller_name,
+                address.Mandal AS mandal,
+                address.Pincode AS pincode,
                 F.phone_number AS phone_number
                 FROM 
-                    Fertilizers F
+                    fertilizers F
                 JOIN 
-                    ARD ON F.phone_number = ARD.phone_number
+                    ard ON F.phone_number = ard.phone_number
                 JOIN 
-                    Address ON F.phone_number = Address.phone_number
+                    address ON F.phone_number = address.phone_number
                 WHERE 
                     F.name LIKE ?
                 UNION
@@ -391,16 +391,16 @@ router.get('/search', (req, res) => {
                 P.price AS price,
                 P.weight AS weight,
                 P.bags AS bags,
-                ARD.name AS seller_name,
-                Address.Mandal AS mandal,
-                Address.Pincode AS pincode,
+                ard.name AS seller_name,
+                address.Mandal AS mandal,
+                address.Pincode AS pincode,
                 P.phone_number AS phone_number
                 FROM 
-                    Pesticides P
+                    pesticides P
                 JOIN 
-                    ARD ON P.phone_number = ARD.phone_number
+                    ard ON P.phone_number = ard.phone_number
                 JOIN 
-                    Address ON P.phone_number = Address.phone_number 
+                    address ON P.phone_number = address.phone_number 
                 WHERE 
                     P.name LIKE ?
                 UNION
@@ -410,16 +410,16 @@ router.get('/search', (req, res) => {
                 M.company AS company,
                 M.price AS price,
                 M.rentSale AS rentSale,
-                AMD.name AS seller_name,
-                Address.Mandal AS mandal,
-                Address.Pincode AS pincode,
+                amd.name AS seller_name,
+                address.Mandal AS mandal,
+                address.Pincode AS pincode,
                 M.phone_number AS phone_number
                 FROM 
-                    Machinery M
+                    machinery M
                 JOIN 
-                    AMD ON M.phone_number = AMD.phone_number
+                    amd ON M.phone_number = amd.phone_number
                 JOIN 
-                    Address ON M.phone_number = Address.phone_number
+                    address ON M.phone_number = address.phone_number
                 WHERE 
                     M.name LIKE ?`;
             template = "searchResults"; 
@@ -462,16 +462,16 @@ router.post('/add-to-cart/:productType', isLoggedIn, (req, res) => {
     let tableName;
     switch (productType) {
         case 'seeds':
-            tableName = 'Seeds';
+            tableName = 'seeds';
             break;
         case 'machinery':
-            tableName = 'Machinery';
+            tableName = 'machinery';
             break;
         case 'pesticides':
-            tableName = 'Pesticides';
+            tableName = 'pesticides';
             break;
         case 'fertilizers':
-            tableName = 'Fertilizers';
+            tableName = 'fertilizers';
             break;
         default:
             return res.status(400).json({ error: 'Invalid product type' });
@@ -497,7 +497,7 @@ router.post('/add-to-cart/:productType', isLoggedIn, (req, res) => {
         console.log('Seller Phone Number:', sellerPhoneNumber);
 
         // Insert the item into the cart table
-        const insertSql = 'INSERT INTO Cart (buyer_phone_no, seller_phone_no, item_name, price, time, date) VALUES (?, ?, ?, ?, ?, ?)';
+        const insertSql = 'INSERT INTO cart (buyer_phone_no, seller_phone_no, item_name, price, time, date) VALUES (?, ?, ?, ?, ?, ?)';
         const values = [buyerPhoneNumber, sellerPhoneNumber, itemName, price, currentTime, currentDate];
 
         console.log('Insert Query:', insertSql);

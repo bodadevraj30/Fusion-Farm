@@ -27,7 +27,7 @@ router.post('/register', (req, res) => {
             return;
         }
         // Insert address details into the Address table
-        const addressSql = `INSERT INTO Address (phone_number, State, District, Mandal, village_city, H_No, Pincode, Landmark) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        const addressSql = `INSERT INTO address (phone_number, State, District, Mandal, village_city, H_No, Pincode, Landmark) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
         db.query(addressSql, [PhoneNumber, State, District, Mandal, Street, HNo, Pincode, Landmark], (addressErr, addressResults) => {
             if (addressErr) {
                 console.error('Error inserting address:', addressErr);

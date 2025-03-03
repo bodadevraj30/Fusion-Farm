@@ -1,3 +1,0 @@
-partials
-layouts.ejs
-other.ejs

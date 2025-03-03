@@ -2,42 +2,42 @@ CREATE DATABASE IF NOT EXISTS Fusionfarm;
 
 USE FusionFarm;
 
-CREATE TABLE IF NOT EXISTS Farmers (
+CREATE TABLE IF NOT EXISTS farmers (
     phone_number VARCHAR(10) PRIMARY KEY CHECK (LENGTH(phone_number) = 10),
     name VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ARD (
+CREATE TABLE IF NOT EXISTS ard (
     phone_number VARCHAR(10) PRIMARY KEY CHECK (LENGTH(phone_number) = 10),
     name VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS AMD (
+CREATE TABLE IF NOT EXISTS amd (
     phone_number VARCHAR(10) PRIMARY KEY CHECK (LENGTH(phone_number) = 10),
     name VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Customer (
+CREATE TABLE IF NOT EXISTS customer (
     phone_number VARCHAR(10) PRIMARY KEY CHECK (LENGTH(phone_number) = 10),
     name VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Phone (
+CREATE TABLE IF NOT EXISTS phone (
     phone_number VARCHAR(10) PRIMARY KEY
 );
 
 DELIMITER //
 
 CREATE TRIGGER insert_phone_number_1
-AFTER INSERT ON Farmers
+AFTER INSERT ON farmers
 FOR EACH ROW
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Phone WHERE phone_number = NEW.phone_number) THEN
-        INSERT INTO Phone (phone_number) VALUES (NEW.phone_number);
+    IF NOT EXISTS (SELECT 1 FROM phone WHERE phone_number = NEW.phone_number) THEN
+        INSERT INTO phone (phone_number) VALUES (NEW.phone_number);
     END IF;
 END;
 //
@@ -48,11 +48,11 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER insert_phone_number_2
-AFTER INSERT ON ARD
+AFTER INSERT ON ard
 FOR EACH ROW
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Phone WHERE phone_number = NEW.phone_number) THEN
-        INSERT INTO Phone (phone_number) VALUES (NEW.phone_number);
+    IF NOT EXISTS (SELECT 1 FROM phone WHERE phone_number = NEW.phone_number) THEN
+        INSERT INTO phone (phone_number) VALUES (NEW.phone_number);
     END IF;
 END;
 //
@@ -64,11 +64,11 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER insert_phone_number_3
-AFTER INSERT ON AMD
+AFTER INSERT ON amd
 FOR EACH ROW
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Phone WHERE phone_number = NEW.phone_number) THEN
-        INSERT INTO Phone (phone_number) VALUES (NEW.phone_number);
+    IF NOT EXISTS (SELECT 1 FROM phone WHERE phone_number = NEW.phone_number) THEN
+        INSERT INTO phone (phone_number) VALUES (NEW.phone_number);
     END IF;
 END;
 //
@@ -80,11 +80,11 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER insert_phone_number_4
-AFTER INSERT ON Customer
+AFTER INSERT ON customer
 FOR EACH ROW
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Phone WHERE phone_number = NEW.phone_number) THEN
-        INSERT INTO Phone (phone_number) VALUES (NEW.phone_number);
+    IF NOT EXISTS (SELECT 1 FROM phone WHERE phone_number = NEW.phone_number) THEN
+        INSERT INTO phone (phone_number) VALUES (NEW.phone_number);
     END IF;
 END;
 //
@@ -95,21 +95,21 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER delete_phone_number_1
-AFTER DELETE ON Farmers
+AFTER DELETE ON farmers
 FOR EACH ROW
 BEGIN
     DECLARE phone_count INT;
     SET phone_count = 0;
 
     -- Check if the phone number exists in any other table
-    SELECT COUNT(*) INTO phone_count FROM ARD WHERE phone_number = OLD.phone_number;
+    SELECT COUNT(*) INTO phone_count FROM ard WHERE phone_number = OLD.phone_number;
     IF phone_count = 0 THEN
-        SELECT COUNT(*) INTO phone_count FROM AMD WHERE phone_number = OLD.phone_number;
+        SELECT COUNT(*) INTO phone_count FROM amd WHERE phone_number = OLD.phone_number;
         IF phone_count = 0 THEN
-            SELECT COUNT(*) INTO phone_count FROM Customer WHERE phone_number = OLD.phone_number;
+            SELECT COUNT(*) INTO phone_count FROM customer WHERE phone_number = OLD.phone_number;
             IF phone_count = 0 THEN
-                -- Phone number doesn't exist in any table, delete from Phone table
-                DELETE FROM Phone WHERE phone_number = OLD.phone_number;
+                -- phone number doesn't exist in any table, delete from phone table
+                DELETE FROM phone WHERE phone_number = OLD.phone_number;
             END IF;
         END IF;
     END IF;
@@ -121,21 +121,21 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER delete_phone_number_2
-AFTER DELETE ON ARD
+AFTER DELETE ON ard
 FOR EACH ROW
 BEGIN
     DECLARE phone_count INT;
     SET phone_count = 0;
 
     -- Check if the phone number exists in any other table
-    SELECT COUNT(*) INTO phone_count FROM Farmers WHERE phone_number = OLD.phone_number;
+    SELECT COUNT(*) INTO phone_count FROM farmers WHERE phone_number = OLD.phone_number;
     IF phone_count = 0 THEN
-        SELECT COUNT(*) INTO phone_count FROM AMD WHERE phone_number = OLD.phone_number;
+        SELECT COUNT(*) INTO phone_count FROM amd WHERE phone_number = OLD.phone_number;
         IF phone_count = 0 THEN
-            SELECT COUNT(*) INTO phone_count FROM Customer WHERE phone_number = OLD.phone_number;
+            SELECT COUNT(*) INTO phone_count FROM customer WHERE phone_number = OLD.phone_number;
             IF phone_count = 0 THEN
-                -- Phone number doesn't exist in any table, delete from Phone table
-                DELETE FROM Phone WHERE phone_number = OLD.phone_number;
+                -- phone number doesn't exist in any table, delete from phone table
+                DELETE FROM phone WHERE phone_number = OLD.phone_number;
             END IF;
         END IF;
     END IF;
@@ -148,21 +148,21 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER delete_phone_number_3
-AFTER DELETE ON AMD
+AFTER DELETE ON amd
 FOR EACH ROW
 BEGIN
     DECLARE phone_count INT;
     SET phone_count = 0;
 
     -- Check if the phone number exists in any other table
-    SELECT COUNT(*) INTO phone_count FROM ARD WHERE phone_number = OLD.phone_number;
+    SELECT COUNT(*) INTO phone_count FROM ard WHERE phone_number = OLD.phone_number;
     IF phone_count = 0 THEN
-        SELECT COUNT(*) INTO phone_count FROM Farmers WHERE phone_number = OLD.phone_number;
+        SELECT COUNT(*) INTO phone_count FROM farmers WHERE phone_number = OLD.phone_number;
         IF phone_count = 0 THEN
-            SELECT COUNT(*) INTO phone_count FROM Customer WHERE phone_number = OLD.phone_number;
+            SELECT COUNT(*) INTO phone_count FROM customer WHERE phone_number = OLD.phone_number;
             IF phone_count = 0 THEN
-                -- Phone number doesn't exist in any table, delete from Phone table
-                DELETE FROM Phone WHERE phone_number = OLD.phone_number;
+                -- phone number doesn't exist in any table, delete from phone table
+                DELETE FROM phone WHERE phone_number = OLD.phone_number;
             END IF;
         END IF;
     END IF;
@@ -175,21 +175,21 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER delete_phone_number_4
-AFTER DELETE ON Customer
+AFTER DELETE ON customer
 FOR EACH ROW
 BEGIN
     DECLARE phone_count INT;
     SET phone_count = 0;
 
     -- Check if the phone number exists in any other table
-    SELECT COUNT(*) INTO phone_count FROM ARD WHERE phone_number = OLD.phone_number;
+    SELECT COUNT(*) INTO phone_count FROM ard WHERE phone_number = OLD.phone_number;
     IF phone_count = 0 THEN
-        SELECT COUNT(*) INTO phone_count FROM AMD WHERE phone_number = OLD.phone_number;
+        SELECT COUNT(*) INTO phone_count FROM amd WHERE phone_number = OLD.phone_number;
         IF phone_count = 0 THEN
-            SELECT COUNT(*) INTO phone_count FROM Farmers WHERE phone_number = OLD.phone_number;
+            SELECT COUNT(*) INTO phone_count FROM farmers WHERE phone_number = OLD.phone_number;
             IF phone_count = 0 THEN
-                -- Phone number doesn't exist in any table, delete from Phone table
-                DELETE FROM Phone WHERE phone_number = OLD.phone_number;
+                -- phone number doesn't exist in any table, delete from phone table
+                DELETE FROM phone WHERE phone_number = OLD.phone_number;
             END IF;
         END IF;
     END IF;
@@ -198,7 +198,7 @@ END;
 
 DELIMITER ;
 
-CREATE TABLE IF NOT EXISTS Address (
+CREATE TABLE IF NOT EXISTS address (
     phone_number VARCHAR(10) PRIMARY KEY, 
     State VARCHAR(255) NOT NULL,
     District VARCHAR(255) NOT NULL, 
@@ -207,20 +207,20 @@ CREATE TABLE IF NOT EXISTS Address (
     H_No VARCHAR(30) NOT NULL, 
     Pincode VARCHAR(6) NOT NULL, 
     Landmark VARCHAR(255),
-    FOREIGN KEY (phone_number) REFERENCES Phone(phone_number) ON DELETE CASCADE
+    FOREIGN KEY (phone_number) REFERENCES phone(phone_number) ON DELETE CASCADE
 );
 
 
-CREATE TABLE IF NOT EXISTS Crop (
+CREATE TABLE IF NOT EXISTS crop (
     phone_number VARCHAR(10),
     name VARCHAR(255) NOT NULL,
     quantity DECIMAL(10, 2) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (phone_number, name),
-    FOREIGN KEY (phone_number) REFERENCES Farmers(phone_number) ON DELETE CASCADE
+    FOREIGN KEY (phone_number) REFERENCES farmers(phone_number) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Seeds (
+CREATE TABLE IF NOT EXISTS seeds (
     phone_number VARCHAR(10),
     name VARCHAR(255) NOT NULL,
     company VARCHAR(255) NOT NULL,
@@ -228,10 +228,10 @@ CREATE TABLE IF NOT EXISTS Seeds (
     weight DECIMAL(10, 2) NOT NULL,
     bags DECIMAL(10, 2),
     PRIMARY KEY (phone_number, name, weight),
-    FOREIGN KEY (phone_number) REFERENCES ARD(phone_number) ON DELETE CASCADE
+    FOREIGN KEY (phone_number) REFERENCES ard(phone_number) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Fertilizers (
+CREATE TABLE IF NOT EXISTS fertilizers (
     phone_number VARCHAR(10),
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -240,10 +240,10 @@ CREATE TABLE IF NOT EXISTS Fertilizers (
     weight DECIMAL(10, 2) NOT NULL,
     bags DECIMAL(10, 2),
     PRIMARY KEY (phone_number, name),
-    FOREIGN KEY (phone_number) REFERENCES ARD(phone_number) ON DELETE CASCADE
+    FOREIGN KEY (phone_number) REFERENCES ard(phone_number) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Pesticides (
+CREATE TABLE IF NOT EXISTS pesticides (
     phone_number VARCHAR(10),
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -252,10 +252,10 @@ CREATE TABLE IF NOT EXISTS Pesticides (
     weight DECIMAL(10, 2) NOT NULL,
     bags DECIMAL(10, 2),
     PRIMARY KEY (phone_number, name),
-    FOREIGN KEY (phone_number) REFERENCES ARD(phone_number) ON DELETE CASCADE
+    FOREIGN KEY (phone_number) REFERENCES ard(phone_number) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Machinery (
+CREATE TABLE IF NOT EXISTS machinery (
     phone_number VARCHAR(10),
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -263,10 +263,10 @@ CREATE TABLE IF NOT EXISTS Machinery (
     price DECIMAL(10, 2) NOT NULL,
     rentSale ENUM('Rent', 'Sale') NOT NULL,
     PRIMARY KEY (phone_number, name),
-    FOREIGN KEY (phone_number) REFERENCES AMD(phone_number) ON DELETE CASCADE
+    FOREIGN KEY (phone_number) REFERENCES amd(phone_number) ON DELETE CASCADE
 );
 
-INSERT INTO Farmers (phone_number, name, password)
+INSERT INTO farmers (phone_number, name, password)
 VALUES 
     ('8125314244', 'Devraj', 'pass123'),
     ('9876543210', 'John Doe', 'password123'),
@@ -281,7 +281,7 @@ VALUES
     ('9988776655', 'Alex Turner', 'password987');
 
 
-INSERT INTO ARD (phone_number, name, password)
+INSERT INTO ard (phone_number, name, password)
 VALUES 
     ('8125314244', 'Devraj', 'pass123'),
     ('9876543222', 'Alice Robertson', 'ardpass123'),
@@ -296,7 +296,7 @@ VALUES
     ('9988771111', 'James Turner', 'ardpassword987');
 
 
-INSERT INTO AMD (phone_number, name, password)
+INSERT INTO amd (phone_number, name, password)
 VALUES 
     ('9876543444', 'Aaron Mitchell', 'amdpass123'),
     ('8765433555', 'Bella Anderson', 'secureamdpass'),
@@ -310,7 +310,7 @@ VALUES
     ('9988774333', 'Jasmine Cooper', 'amdpassword987');
 
 
-INSERT INTO Customer (phone_number, name, password)
+INSERT INTO customer (phone_number, name, password)
 VALUES 
     ('9876544777', 'Liam Johnson', 'customerpass123'),
     ('8765434888', 'Olivia Smith', 'securecustomerpass'),
@@ -324,8 +324,8 @@ VALUES
     ('9988772666', 'Ava Mitchell', 'customerpassword987');
 
 
--- Insert sample address data into the Address table for different entities in India
-INSERT INTO Address (phone_number, State, District, Mandal, village_city, H_No, Pincode, Landmark)
+-- Insert sample address data into the address table for different entities in India
+INSERT INTO address (phone_number, State, District, Mandal, village_city, H_No, Pincode, Landmark)
 VALUES 
 ('9876543210', 'Karnataka', 'Bangalore', 'East', 'Whitefield', 'H_No1', '560001', 'Landmark1'),
 ('8765432109', 'Maharashtra', 'Mumbai', 'South', 'Colaba', 'H_No2', '400001', 'Landmark2'),
@@ -369,8 +369,8 @@ VALUES
 ('9988772666', 'Tamil Nadu', 'Madurai', 'South', 'Meenakshi Amman Temple', 'H_No40', '625001', 'Landmark40');
 
 
--- Insert sample crop data into the Crop table for Farmers in India
-INSERT INTO Crop (phone_number, name, quantity, price)
+-- Insert sample crop data into the crop table for farmers in India
+INSERT INTO crop (phone_number, name, quantity, price)
 VALUES 
     ('9876543210', 'Rice', 100.50, 5000.00),
     ('8765432109', 'Wheat', 75.25, 4500.00),
@@ -395,12 +395,12 @@ VALUES
 
 
 
--- Insert sample seed data into the Seeds table for ARD in India
-INSERT INTO Seeds (phone_number, name, company, price, weight, bags)
+-- Insert sample seed data into the seeds table for ard in India
+INSERT INTO seeds (phone_number, name, company, price, weight, bags)
 VALUES 
     ('9876543222', 'Wheat Seeds', 'IndianAgro', 300.00, 50.00, 10.00),
     ('8765432333', 'Rice Seeds', 'HarvestIndia', 250.00, 40.00, 8.00),
-    ('7654323444', 'Maize Seeds', 'FarmersChoice', 180.00, 30.00, 6.00),
+    ('7654323444', 'Maize Seeds', 'farmersChoice', 180.00, 30.00, 6.00),
     ('6543214555', 'Barley Seeds', 'AgriGold', 320.00, 55.00, 12.00),
     ('5432105666', 'Soybean Seeds', 'GreenHarvest', 200.00, 35.00, 7.00),
     ('4321096777', 'Paddy Seeds', 'GoldenFields', 280.00, 48.00, 9.50),
@@ -410,12 +410,12 @@ VALUES
     ('9988771111', 'Mustard Seeds', 'SpiceHarvest', 220.00, 38.00, 8.50);
 
 
--- Insert sample fertilizer data into the Fertilizers table for ARD in India
-INSERT INTO Fertilizers (phone_number, name, description, company, price, weight, bags)
+-- Insert sample fertilizer data into the fertilizers table for ard in India
+INSERT INTO fertilizers (phone_number, name, description, company, price, weight, bags)
 VALUES 
     ('9876543222', 'Nitrogen-Rich Blend', 'Highly effective for crop growth', 'GreenHarvest', 150.00, 25.00, 5.00),
     ('8765432333', 'Phosphorus-Based Mix', 'HarvestIndia', 'AgriGold', 120.00, 20.00, 4.00),
-    ('7654323444', 'Potassium-Enriched Formula', 'FarmersChoice', 'OrganicFarms', 180.00, 30.00, 6.00),
+    ('7654323444', 'Potassium-Enriched Formula', 'farmersChoice', 'OrganicFarms', 180.00, 30.00, 6.00),
     ('6543214555', 'Complete NPK Fertilizer', 'GoldenFields', 'BioHarvest', 200.00, 35.00, 7.00),
     ('5432105666', 'Organic Compost', 'CottonAgro', 'EcoGrow', 100.00, 15.00, 3.00),
     ('4321096777', 'Microbial Inoculants', 'SpiceHarvest', 'MicroOrganix', 80.00, 12.00, 2.50),
@@ -430,12 +430,12 @@ VALUES
     ('5432105666', 'Silicon-Based Fertilizer', 'FenugreekFarms', 'SiliconHarvest', 130.00, 22.00, 4.50);
 
 
--- Insert sample pesticide data into the Pesticides table for ARD in India
-INSERT INTO Pesticides (phone_number, name, description, company, price, weight, bags)
+-- Insert sample pesticide data into the pesticides table for ard in India
+INSERT INTO pesticides (phone_number, name, description, company, price, weight, bags)
 VALUES 
     ('9876543222', 'Insecticide-A', 'Effective against common pests', 'GreenHarvest', 200.00, 15.00, 3.00),
     ('8765432333', 'Fungicide-B', 'Controls fungal diseases', 'HarvestIndia', 180.00, 12.00, 2.50),
-    ('7654323444', 'Herbicide-C', 'Targets unwanted weeds', 'FarmersChoice', 160.00, 10.00, 2.00),
+    ('7654323444', 'Herbicide-C', 'Targets unwanted weeds', 'farmersChoice', 160.00, 10.00, 2.00),
     ('6543214555', 'Rodenticide-D', 'Eliminates rodents and pests', 'GoldenFields', 220.00, 18.00, 3.50),
     ('5432105666', 'Nematicide-E', 'Protects against nematodes', 'OrganicFarms', 240.00, 20.00, 4.00),
     ('4321096777', 'Bactericide-F', 'Controls bacterial infections', 'CottonAgro', 200.00, 15.00, 3.00),
@@ -450,8 +450,8 @@ VALUES
     ('4321096777', 'Plant Growth Regulator-O', 'Controls plant growth', 'LinseedIndustries', 260.00, 22.00, 4.50);
 
 
--- Insert sample machinery data into the Machinery table for AMD in India
-INSERT INTO Machinery (phone_number, name, description, company, price, rentSale)
+-- Insert sample machinery data into the machinery table for amd in India
+INSERT INTO machinery (phone_number, name, description, company, price, rentSale)
 VALUES 
     ('9876543444', 'Tractor-A', 'Powerful agricultural tractor', 'IndianAgroTech', 500000.00, 'Rent'),
     ('8765433555', 'Combine Harvester-B', 'Efficient harvesting machine', 'HarvestIndia', 800000.00, 'Sale'),
@@ -472,7 +472,7 @@ VALUES
 
 
 
-CREATE TABLE IF NOT EXISTS Orders (
+CREATE TABLE IF NOT EXISTS orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     buyer_phone_number VARCHAR(10) NOT NULL,
     seller_phone_number VARCHAR(10) NOT NULL,
@@ -484,8 +484,8 @@ CREATE TABLE IF NOT EXISTS Orders (
 );
 
 
--- Insert sample data into the Orders table with references to Indian customers and sellers
-INSERT INTO Orders (buyer_phone_number, seller_phone_number, item, order_date, rentSale, price, status)
+-- Insert sample data into the orders table with references to Indian customers and sellers
+INSERT INTO orders (buyer_phone_number, seller_phone_number, item, order_date, rentSale, price, status)
 VALUES 
     ('5432109876', '4321096777', 'Paddy Seeds', '2024-02-10', 'Sale', 280.00, 'Pending'),
     ('4321098765', '3210987888', 'Calcium-Rich Supplement', '2024-02-12', 'Sale', 160.00, 'Processing'),
@@ -500,7 +500,7 @@ VALUES
     ('4321098222', '8765432109', 'Fruits', '2024-03-08', 'Sale', 7500.00, 'Pending');
 
 
-CREATE TABLE Cart (
+CREATE TABLE cart (
     buyer_phone_no VARCHAR(15),
     seller_phone_no VARCHAR(15),
     item_name VARCHAR(255),
@@ -511,7 +511,7 @@ CREATE TABLE Cart (
 );
 
 
-INSERT INTO Cart (buyer_phone_no, seller_phone_no, item_name, price, time, date)
+INSERT INTO cart (buyer_phone_no, seller_phone_no, item_name, price, time, date)
 VALUES 
 ('6543216000', '9876543210', 'Rice', 5000.00, '10:00:00', '2024-04-08'),
 ('4321098222', '7654321098', 'Maize', 6000.00, '11:30:00', '2024-04-08'),

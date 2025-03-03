@@ -2,6 +2,7 @@
 
 const { db } = require('../index');
 
+
 // Middleware function to check if the user is authenticated
 const isAuthenticated = (req, res, next) => {
     if (req.session && req.session.userId) {

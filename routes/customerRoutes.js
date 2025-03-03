@@ -30,11 +30,11 @@ router.get('/customer/vegitables', isLoggedIn, (req, res) => {
         F.phone_number AS phone_number,
         A.Pincode AS pincode
     FROM 
-        Crop C
+        crop C
     JOIN 
         Farmers F ON C.phone_number = F.phone_number
     JOIN 
-        Address A ON C.phone_number = A.phone_number`;
+        address A ON C.phone_number = A.phone_number`;
     
     db.query(sql, (err, results) => {
         if (err) {
@@ -61,11 +61,11 @@ router.get('/searchVegi', (req, res) => {
         F.phone_number AS phone_number,
         A.Pincode AS pincode
     FROM 
-        Crop C
+        crop C
     JOIN 
         Farmers F ON C.phone_number = F.phone_number
     JOIN 
-        Address A ON C.phone_number = A.phone_number
+        address A ON C.phone_number = A.phone_number
     WHERE 
         C.name LIKE ?`;
 
