@@ -32,7 +32,7 @@ router.get('/customer/vegitables', isLoggedIn, (req, res) => {
     FROM 
         crop C
     JOIN 
-        Farmers F ON C.phone_number = F.phone_number
+        farmers F ON C.phone_number = F.phone_number
     JOIN 
         address A ON C.phone_number = A.phone_number`;
     
@@ -63,7 +63,7 @@ router.get('/searchVegi', (req, res) => {
     FROM 
         crop C
     JOIN 
-        Farmers F ON C.phone_number = F.phone_number
+        farmers F ON C.phone_number = F.phone_number
     JOIN 
         address A ON C.phone_number = A.phone_number
     WHERE 
