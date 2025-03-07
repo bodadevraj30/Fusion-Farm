@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/reset.css">
+    <link rel="stylesheet" href="/styles/showResultsStyle.css" />
+    <title>Wrapper Example</title>
+</head>
+<body>
+    <div class="rowSearchResults rowSearchResults1">
+        <div class="container">
+            <h1>FusionFarm</h1>
+        </div>
+    </div>
+    <div class="rowSearchResults rowSearchResults4">
+        <nav class="menu">
+            <ul>
+                <li><a href="/farmer">Home</a></li>
+                <li><a href="/farmer/seeds">Seeds</a></li>
+                <li><a href="/farmer/Fertilizers">Fertilizers</a></li>
+                <li><a href="/farmer/Machinerys">Machinerys</a></li>
+                <li><a href="/farmer_upload">upload</a></li>
+                <li><a href="/cart">Cart</a></li>
+            </ul>
+            <form action="/search" method="GET" class="search-form">
+                <input type="text" name="query" placeholder="Search products..." required>
+                <input type="hidden" name="category" value="pesticides">
+                <button type="submit">Search</button>
+            </form>            
+            <% if (isLoggedIn) { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/profile">Profile</a></button>
+                    <button id="registerButton"><a href="/logout">Log out</a></button> 
+                </div>
+            <% } else { %>
+                <div class="new_div">
+                    <button id="loginButton"><a href="/login">Login</a></button>
+                    <button id="registerButton"><a href="/register">Register</a></button> 
+                </div>
+            <% } %>
+        </nav>
+    </div>
+    <div class="rowSearchResults rowSearchResults2">
+        <div class="container">
+            <div class="filters">
+                
+            </div>
+            <div class="searchResults">
+                <% try { %>
+                    <% pesticides.forEach(function(pesticide) { %>
+                        <div class="entry">
+                            <div class="content">
+                                <div class="imageContainer">
+                                    <img src="<%= pesticide.image_path || '/images/default.png' %>" class="groceryImage" alt="<%= pesticide.name %>" />
+                                </div>
+                                <div class="resultText">
+                                    <div class="contents1">
+                                        <p class="heading"><%= pesticide.name %></p>
+                                        <p class="vendorName"><%= pesticide.seller_name %></p>
+                                        <p class="address"><%= pesticide.mandal %> - <%= pesticide.pincode %></p>
+                                        <p class="phoneNumber"><%= pesticide.phone_number %></p>
+                                    </div>
+                                    <div class="contents2">
+                                        <p class="price">Price: ₹<%= pesticide.price %> / kg</p>
+                                        <p class="weight">Weight: <%= pesticide.weight %> Kg</p>
+                                        <button class="addToCart">Add To Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>                    
+                <% } catch (error) { %>
+                    <p>Error iterating through pesticides.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="rowSearchResults3">
+        <div class="store">
+            <footer class="footer">
+                <div class="copyright">
+                    <a href="/" class="logo"></a>
+                    <span>© <%= new Date().getFullYear() %> Your Website, Inc</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".addToCart").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    const productCard = event.target.closest(".entry");
+        
+                    if (!productCard) {
+                        console.error("🔴 Error: Product card not found.");
+                        return;
+                    }
+        
+                    const itemNameElement = productCard.querySelector(".heading");
+                    const priceElement = productCard.querySelector(".price");
+        
+                    if (!itemNameElement || !priceElement) {
+                        console.error("🔴 Error: Item name or price element missing.");
+                        return;
+                    }
+        
+                    const itemName = itemNameElement.innerText.trim();
+                    const priceText = priceElement.innerText.trim();
+                    const price = priceText.replace("Price: ₹", "").trim();
+        
+                    // Extract product type from URL
+                    const productType = window.location.pathname.split('/').pop();
+                    console.log("🟢 Product Type:", productType);
+        
+                    if (!itemName || !price) {
+                        console.error("🔴 Error: Missing itemName or price before sending request.");
+                        return;
+                    }
+        
+                    const requestBody = JSON.stringify({ itemName, price });
+                    console.log("🟢 Sending to Backend:", requestBody); // ✅ Check payload
+        
+                    fetch(`/addToCart/${productType}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: requestBody
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert("❌ Error: " + data.error);
+                        } else {
+                            alert("✅ Item added to cart successfully!");
+                        }
+                    })
+                    .catch(error => console.error('🔴 Fetch Error:', error));
+                });
+            });
+        });
+    </script> 
+</body>
+</html>
