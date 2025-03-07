@@ -3,104 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table Example</title>
-    <link rel="stylesheet" href="/styles/reset.css">
-	<link rel="stylesheet" href="/styles/styleProfile.css">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/styleProfile.css">
     <style>
         .container {
-            text-align: center; /* Change to center */
+            text-align: center;
             margin: 0 auto;
             width: 80%;
         }
-
         table {
             border-collapse: collapse;
-            /* width: auto; Remove this line */
-            margin: 0 auto; /* Add this line */
+            margin: 20px auto;
+            width: 60%;
         }
-
         th, td {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
         }
-
         th {
             background-color: #f2f2f2;
         }
-
-        h1 {
-            color: #008000;
-        }
-
         .rowInd1 {
             height: 12vh;
             background-color: #f0f0f0;
             color: #008000;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             font-size: 200%;
         }
-
-        .rowInd1 h1 {
-            margin: 0 auto;
-        }
-
         .greetings {
             font-size: 7.5vh; 
             padding-top: 2vh;
             padding-bottom: 2vh;
         }
+        .update-form {
+            display: none; /* Hide the form initially */
+        }
+        .update-button {
+            background-color: #008000;
+            color: #f0f0f0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #008000;
+            padding: 0px;
+
+        }
+        nav a {
+            list-style-type: none;
+            color: #f0f0f0;
+            text-decoration: none;
+            font-size: 1.25rem;
+            margin: 11px;
+        }
+        nav .nav-links {
+            display: flex;
+        }
+        .nav-links a {
+            margin-right: 20px;
+        }
     </style>
-    <script>
-        window.onload = function() {
-            const table = document.querySelector('table');
-            const ths = table.querySelectorAll('th');
-            const tds = table.querySelectorAll('td');
-
-            // Function to get the maximum width of strings in a column
-            function getMaxWidth(elements) {
-                let maxWidth = 0;
-                elements.forEach(element => {
-                    const width = element.clientWidth;
-                    if (width > maxWidth) {
-                        maxWidth = width;
-                    }
-                });
-                return maxWidth;
-            }
-
-            // Set the width of each column based on the maximum string width + 10vw
-            ths.forEach((th, index) => {
-                const maxCellWidth = Math.max(getMaxWidth([th]), getMaxWidth(Array.from(tds, td => td.parentNode.children[index])));
-                th.style.width = `calc(${maxCellWidth}px + 10vw)`;
-            });
-        };
-    </script>
 </head>
 <body>
     <div class="rowInd1">
         <h1>FusionFarm</h1>
     </div>
-        <div class="container">
-        <h1 class="greetings">Hello, <%= userName %>!</h1>
-        
+    <nav>
+        <div class="nav-links">
+            <a href="<%= homePage %>"> Home</a> 
+        </div>
+        <a href="/logout"> Logout</a>
+    </nav>
+    <div class="container">
+        <h1 class="greetings">Hello, <%= user.name %>!</h1>
 
-        <div class="rowRegister2">
-            <form action="/profile" method="post"> <!-- Updated action to /profile -->
-                <input type="password" id="password" name="Password" class="registerInput" placeholder="Password" required><br>
-                <input type="password" id="reenterPassword" name="ReenterPassword" class="registerInput" placeholder="Re-enter Password" required><br>
-                <input type="text" id="address" name="HNo" class="registerInput" placeholder="HNo" required><br>
-                <input type="text" id="address" name="village_city" class="registerInput" placeholder="Street" required><br>
-                <input type="text" id="address" name="Mandal" class="registerInput" placeholder="Mandal" required><br>
-                <input type="text" id="address" name="District" class="registerInput" placeholder="District" required><br>
-                <input type="text" id="address" name="State" class="registerInput" placeholder="State" required><br>
-                <input type="text" id="address" name="Landmark" class="registerInput" placeholder="Landmark" required><br>
-                <input type="text" id="address" name="Pincode" class="registerInput" placeholder="Pin Code" required><br>
-                <input type="submit" class="signUpSubmitButton" value="Sign Up">
+        <!-- Display user details in a table -->
+        <table>
+            <tr><th>Phone Number</th><td><%= user.phone_number %></td></tr>
+            <tr><th>House No</th><td><%= user.H_No %></td></tr>
+            <tr><th>Street</th><td><%= user.village_city %></td></tr>
+            <tr><th>Mandal</th><td><%= user.Mandal %></td></tr>
+            <tr><th>District</th><td><%= user.District %></td></tr>
+            <tr><th>State</th><td><%= user.State %></td></tr>
+            <tr><th>Landmark</th><td><%= user.Landmark %></td></tr>
+            <tr><th>Pincode</th><td><%= user.Pincode %></td></tr>
+        </table>
+
+        <button class="update-button" onclick="toggleUpdateForm()">Update Profile</button>
+
+        <!-- Update form (Initially Hidden) -->
+        <div class="update-form" id="updateForm">
+            <form action="/profile" method="post">
+                <input type="password" name="Password" class="registerInput" placeholder="New Password"><br>
+                <input type="password" name="ReenterPassword" class="registerInput" placeholder="Re-enter Password"><br>
+                <input type="text" name="HNo" class="registerInput" placeholder="House No" value="<%= user.HNo %>"><br>
+                <input type="text" name="village_city" class="registerInput" placeholder="Street" value="<%= user.village_city %>"><br>
+                <input type="text" name="Mandal" class="registerInput" placeholder="Mandal" value="<%= user.Mandal %>"><br>
+                <input type="text" name="District" class="registerInput" placeholder="District" value="<%= user.District %>"><br>
+                <input type="text" name="State" class="registerInput" placeholder="State" value="<%= user.State %>"><br>
+                <input type="text" name="Landmark" class="registerInput" placeholder="Landmark" value="<%= user.Landmark %>"><br>
+                <input type="text" name="Pincode" class="registerInput" placeholder="Pin Code" value="<%= user.Pincode %>"><br>
+                <input type="submit" class="signUpSubmitButton" value="Update">
             </form>
-        </div>        
+        </div>
     </div>
+
+    <script>
+        function toggleUpdateForm() {
+            const form = document.getElementById("updateForm");
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
+    </script>
 </body>
 </html>

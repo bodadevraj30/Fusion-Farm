@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles/reset.css">
-    <link rel="stylesheet" href="/styles/showResultsStyle.css" />
+    <link rel="stylesheet" href="/styles/reset.css">
+    <link rel="stylesheet" href="/styles/showResultsStyle.css">
     <title>Machinery</title>
 </head>
 <body>
@@ -48,12 +48,11 @@
             </div>
             <div class="searchResults">
                 <% try { %>
-                    <% Machinerys.forEach(function(machine) { %>
+                    <% machinerys.forEach(function(machine) { %>
                         <div class="entry">
                             <div class="content">
                                 <div class="imageContainer">
-                                    <!-- You can add an image if available in your data -->
-                                    <img src="/Images/loading.png" class="groceryImage" />
+                                    <img src="<%= machine.image_path || '/images/default.png' %>" class="groceryImage" alt="<%= machine.name %>" />
                                 </div>
                                 <div class="resultText">
                                     <div class="contents1">
@@ -92,5 +91,60 @@
             </footer>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".addToCart").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    const productCard = event.target.closest(".entry");
+        
+                    if (!productCard) {
+                        console.error("🔴 Error: Product card not found.");
+                        return;
+                    }
+        
+                    const itemNameElement = productCard.querySelector(".heading");
+                    const priceElement = productCard.querySelector(".price");
+        
+                    if (!itemNameElement || !priceElement) {
+                        console.error("🔴 Error: Item name or price element missing.");
+                        return;
+                    }
+        
+                    const itemName = itemNameElement.innerText.trim();
+                    const priceText = priceElement.innerText.trim();
+                    const price = priceText.replace("Price: ₹", "").trim();
+        
+                    // Extract product type from URL
+                    const productType = window.location.pathname.split('/').pop();
+                    console.log("🟢 Product Type:", productType);
+        
+                    if (!itemName || !price) {
+                        console.error("🔴 Error: Missing itemName or price before sending request.");
+                        return;
+                    }
+        
+                    const requestBody = JSON.stringify({ itemName, price });
+                    console.log("🟢 Sending to Backend:", requestBody); // ✅ Check payload
+        
+                    fetch(`/addToCart/${productType}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: requestBody
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert("❌ Error: " + data.error);
+                        } else {
+                            alert("✅ Item added to cart successfully!");
+                        }
+                    })
+                    .catch(error => console.error('🔴 Fetch Error:', error));
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -519,6 +519,121 @@ VALUES
 ('8125314244', '8765432333', 'Nitrogen-Rich Blend', 150.00, '15:45:00', '2024-04-08');
 
 
+ALTER TABLE crop ADD COLUMN image_path VARCHAR(255) DEFAULT '/images/default.png';
+ALTER TABLE seeds ADD COLUMN image_path VARCHAR(255) DEFAULT '/images/default.png';
+ALTER TABLE fertilizers ADD COLUMN image_path VARCHAR(255) DEFAULT '/images/default.png';
+ALTER TABLE pesticides ADD COLUMN image_path VARCHAR(255) DEFAULT '/images/default.png';
+ALTER TABLE machinery ADD COLUMN image_path VARCHAR(255) DEFAULT '/images/default.png';
+
+
+UPDATE crop SET image_path = '/images/crop_rice.jpg' WHERE name = 'Rice';
+UPDATE crop SET image_path = '/images/crop_wheat.jpg' WHERE name = 'Wheat';
+UPDATE crop SET image_path = '/images/crop_maize.jpg' WHERE name = 'Maize';
+UPDATE crop SET image_path = '/images/crop_pulses.jpg' WHERE name = 'Pulses';
+UPDATE crop SET image_path = '/images/crop_cotton.png' WHERE name = 'Cotton';
+
+UPDATE seeds SET image_path = '/images/seeds_wheat.jpg' WHERE name = 'Wheat Seeds';
+UPDATE seeds SET image_path = '/images/seeds_rice.jpg' WHERE name = 'Rice Seeds';
+UPDATE seeds SET image_path = '/images/seeds_maize.jpg' WHERE name = 'Maize Seeds';
+
+UPDATE fertilizers SET image_path = '/images/fertilizer_npk.jpg' WHERE name = 'Complete NPK Fertilizer';
+UPDATE fertilizers SET image_path = '/images/fertilizer_organic.jpg' WHERE name = 'Organic Compost';
+
+UPDATE pesticides SET image_path = '/images/pesticide_insecticide.jpg' WHERE name = 'Insecticide-A';
+UPDATE pesticides SET image_path = '/images/pesticide_fungicide.jpg' WHERE name = 'Fungicide-B';
+
+UPDATE machinery SET image_path = '/images/machinery_tractor.jpg' WHERE name = 'Tractor-A';
+UPDATE machinery SET image_path = '/images/machinery_harvester.jpg' WHERE name = 'Combine Harvester-B';
+
+
+-- crop
+UPDATE crop SET image_path = '/images/crop_rice.jpg' WHERE name = 'Rice';
+UPDATE crop SET image_path = '/images/crop_wheat.jpg' WHERE name = 'Wheat';
+UPDATE crop SET image_path = '/images/crop_maize.jpg' WHERE name = 'Maize';
+UPDATE crop SET image_path = '/images/crop_pulses.jpg' WHERE name = 'Pulses';
+UPDATE crop SET image_path = '/images/crop_cotton.jpg' WHERE name = 'Cotton';
+UPDATE crop SET image_path = '/images/crop_sugarcane.jpg' WHERE name = 'Sugarcane';
+UPDATE crop SET image_path = '/images/crop_mustard.jpg' WHERE name = 'Mustard';
+UPDATE crop SET image_path = '/images/crop_soybean.jpg' WHERE name = 'Soybean';
+UPDATE crop SET image_path = '/images/crop_coffee.jpg' WHERE name = 'Coffee';
+UPDATE crop SET image_path = '/images/crop_tea.jpg' WHERE name = 'Tea';
+UPDATE crop SET image_path = '/images/crop_spices.jpg' WHERE name = 'Spices';
+UPDATE crop SET image_path = '/images/crop_fruits.jpg' WHERE name = 'Fruits';
+UPDATE crop SET image_path = '/images/crop_oilseeds.jpg' WHERE name = 'Oilseeds';
+UPDATE crop SET image_path = '/images/crop_flowers.jpg' WHERE name = 'Flowers';
+UPDATE crop SET image_path = '/images/crop_herbs.jpg' WHERE name = 'Herbs';
+UPDATE crop SET image_path = '/images/crop_paddy.jpg' WHERE name = 'Paddy';
+UPDATE crop SET image_path = '/images/crop_barley.jpg' WHERE name = 'Barley';
+UPDATE crop SET image_path = '/images/crop_jute.jpg' WHERE name = 'Jute';
+UPDATE crop SET image_path = '/images/crop_millet.jpg' WHERE name = 'Millet';
+UPDATE crop SET image_path = '/images/crop_neem.jpg' WHERE name = 'Neem';
+
+-- seeds
+UPDATE seeds SET image_path = '/images/seeds_wheat.jpg' WHERE name = 'Wheat Seeds';
+UPDATE seeds SET image_path = '/images/seeds_rice.jpg' WHERE name = 'Rice Seeds';
+UPDATE seeds SET image_path = '/images/seeds_maize.jpeg' WHERE name = 'Maize Seeds';
+UPDATE seeds SET image_path = '/images/seeds_barley.jpg' WHERE name = 'Barley Seeds';
+UPDATE seeds SET image_path = '/images/seeds_soybean.jpg' WHERE name = 'Soybean Seeds';
+UPDATE seeds SET image_path = '/images/seeds_paddy.jpg' WHERE name = 'Paddy Seeds';
+UPDATE seeds SET image_path = '/images/seeds_cotton.jpg' WHERE name = 'Cotton Seeds';
+UPDATE seeds SET image_path = '/images/seeds_jute.jpg' WHERE name = 'Jute Seeds';
+UPDATE seeds SET image_path = '/images/seeds_sunflower.jpg' WHERE name = 'Sunflower Seeds';
+UPDATE seeds SET image_path = '/images/seeds_mustard.jpg' WHERE name = 'Mustard Seeds';
+
+
+--fertilizers
+UPDATE fertilizers SET image_path = '/images/fertilizer_nitrogen_rich_blend.jpg' WHERE name = 'Nitrogen-Rich Blend';
+UPDATE fertilizers SET image_path = '/images/fertilizer_phosphorus_based_mix.jpg' WHERE name = 'Phosphorus-Based Mix';
+UPDATE fertilizers SET image_path = '/images/fertilizer_potassium_enriched_formula.jpg' WHERE name = 'Potassium-Enriched Formula';
+UPDATE fertilizers SET image_path = '/images/fertilizer_complete_npk_fertilizer.jpg' WHERE name = 'Complete NPK Fertilizer';
+UPDATE fertilizers SET image_path = '/images/fertilizer_organic_compost.jpg' WHERE name = 'Organic Compost';
+UPDATE fertilizers SET image_path = '/images/fertilizer_microbial_inoculants.jpg' WHERE name = 'Microbial Inoculants';
+UPDATE fertilizers SET image_path = '/images/fertilizer_calcium_rich_supplement.jpg' WHERE name = 'Calcium-Rich Supplement';
+UPDATE fertilizers SET image_path = '/images/fertilizer_magnesium_infused_mix.jpg' WHERE name = 'Magnesium-Infused Mix';
+UPDATE fertilizers SET image_path = '/images/fertilizer_sulfur_containing_blend.jpg' WHERE name = 'Sulfur-Containing Blend';
+UPDATE fertilizers SET image_path = '/images/fertilizer_iron_enhanced_formula.jpg' WHERE name = 'Iron-Enhanced Formula';
+UPDATE fertilizers SET image_path = '/images/fertilizer_zinc_based_fertilizer.png' WHERE name = 'Zinc-Based Fertilizer';
+UPDATE fertilizers SET image_path = '/images/fertilizer_boron_enriched_mix.jpg' WHERE name = 'Boron-Enriched Mix';
+UPDATE fertilizers SET image_path = '/images/fertilizer_manganese_infused_blend.jpg' WHERE name = 'Manganese-Infused Blend';
+UPDATE fertilizers SET image_path = '/images/fertilizer_copper_rich_supplement.jpg' WHERE name = 'Copper-Rich Supplement';
+UPDATE fertilizers SET image_path = '/images/fertilizer_silicon_based_fertilizer.jpg' WHERE name = 'Silicon-Based Fertilizer';
+
+--pesticides
+UPDATE pesticides SET image_path = '/images/pesticide_insecticide_a.jpg' WHERE name = 'Insecticide-A';
+UPDATE pesticides SET image_path = '/images/pesticide_fungicide_b.jpg' WHERE name = 'Fungicide-B';
+UPDATE pesticides SET image_path = '/images/pesticide_herbicide_c.jpg' WHERE name = 'Herbicide-C';
+UPDATE pesticides SET image_path = '/images/pesticide_rodenticide_d.jpg' WHERE name = 'Rodenticide-D';
+UPDATE pesticides SET image_path = '/images/pesticide_nematicide_e.jpg' WHERE name = 'Nematicide-E';
+UPDATE pesticides SET image_path = '/images/pesticide_bactericide_f.jpg' WHERE name = 'Bactericide-F';
+UPDATE pesticides SET image_path = '/images/pesticide_virucide_g.jpeg' WHERE name = 'Virucide-G';
+UPDATE pesticides SET image_path = '/images/pesticide_molluscicide_h.jpg' WHERE name = 'Molluscicide-H';
+UPDATE pesticides SET image_path = '/images/pesticide_miticide_i.jpg' WHERE name = 'Miticide-I';
+UPDATE pesticides SET image_path = '/images/pesticide_repellent_j.jpg' WHERE name = 'Repellent-J';
+UPDATE pesticides SET image_path = '/images/pesticide_attractant_k.jpg' WHERE name = 'Attractant-K';
+UPDATE pesticides SET image_path = '/images/pesticide_antifeedant_l.jpg' WHERE name = 'Antifeedant-L';
+UPDATE pesticides SET image_path = '/images/pesticide_biological_control_m.jpg' WHERE name = 'Biological Control-M';
+UPDATE pesticides SET image_path = '/images/pesticide_rescue_chemical_n.jpg' WHERE name = 'Rescue Chemical-N';
+UPDATE pesticides SET image_path = '/images/pesticide_plant_growth_regulator_o.jpg' WHERE name = 'Plant Growth Regulator-O';
+
+
+
+--machinery
+UPDATE machinery SET image_path = '/images/machinery_tractor_a.jpg' WHERE name = 'Tractor-A';
+UPDATE machinery SET image_path = '/images/machinery_combine_harvester_b.jpg' WHERE name = 'Combine Harvester-B';
+UPDATE machinery SET image_path = '/images/machinery_plough_c.jpg' WHERE name = 'Plough-C';
+UPDATE machinery SET image_path = '/images/machinery_seeder_d.jpg' WHERE name = 'Seeder-D';
+UPDATE machinery SET image_path = '/images/machinery_sprayer_e.jpg' WHERE name = 'Sprayer-E';
+UPDATE machinery SET image_path = '/images/machinery_cultivator_f.jpg' WHERE name = 'Cultivator-F';
+UPDATE machinery SET image_path = '/images/machinery_thresher_g.jpg' WHERE name = 'Thresher-G';
+UPDATE machinery SET image_path = '/images/machinery_rotavator_h.jpg' WHERE name = 'Rotavator-H';
+UPDATE machinery SET image_path = '/images/machinery_harrow_i.jpg' WHERE name = 'Harrow-I';
+UPDATE machinery SET image_path = '/images/machinery_tiller_j.jpg' WHERE name = 'Tiller-J';
+UPDATE machinery SET image_path = '/images/machinery_seeder_planter_k.jpg' WHERE name = 'Seeder-Planter-K';
+UPDATE machinery SET image_path = '/images/machinery_transplanter_l.jpg' WHERE name = 'Transplanter-L';
+UPDATE machinery SET image_path = '/images/machinery_sickle_bar_mower_m.jpg' WHERE name = 'Sickle-Bar Mower-M';
+UPDATE machinery SET image_path = '/images/machinery_baler_n.jpg' WHERE name = 'Baler-N';
+UPDATE machinery SET image_path = '/images/machinery_seeder_spreader_o.jpg' WHERE name = 'Seeder Spreader-O';
+
 
 
 

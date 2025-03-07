@@ -54,8 +54,8 @@ form {
 
 #loginButton {
     margin-left: auto; /* Pushes the login button to the right */
-    padding-left: 70ic;
-    margin-right: 2vw;
+    padding-left: 100px;
+    margin-right: 100px;
     background-color: #008000;
     text-decoration: none;
     border: none;
@@ -65,7 +65,7 @@ form {
 }
 
 #loginButton {
-    margin-right: 10px; /* Adjust as needed */
+    margin-right: 20px; /* Adjust as needed */
 }
 
 .rowRegister2 {

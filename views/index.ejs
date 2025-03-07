@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/reset.css">
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="/styles/indexstyle.css">
     <title>Search Page</title>
 </head>
 
-<body>
+<body data-logged-in="<%- typeof isLoggedIn !== 'undefined' ? isLoggedIn : false %>">
     <div class="rowInd1">
         <h1>FusionFarm</h1>
-        
     </div>
     <div class="rowInd2">
         <nav class="menu">
@@ -29,11 +28,61 @@
             </div>
         </nav>
     </div>    
-    <div class="rowInd3">
-        <form action="/showResults" method="post">
+    <div class="search-container">
+        <form action="/index" method="post">
             <input type="text" class="searchQuery" name="searchQuery" placeholder="Search" required>
             <button type="submit" class="searchSubmitButton">Search</button>
         </form>
+    </div>
+
+    <div class="rowSearchResults rowSearchResults2">
+        <div class="container">
+            <div class="filters"></div>
+            <div class="searchResults">
+                <% if (products.length > 0) { %>
+                    <% products.forEach(function(product) { %>
+                        <div class="entry">
+                            <div class="content">
+                                <div class="imageContainer">
+                                    <img src="<%= (product.image_path && typeof product.image_path === 'string') ? product.image_path : '/images/default.png' %>" class="groceryImage" />
+                                </div>
+                                <div class="resultText">
+                                    <div class="contents1">
+                                        <p class="heading"><%= product.name %></p>
+                                        <p class="vendorName"><%= product.seller_name %></p>
+                                        <p class="address"><%= product.mandal %> - <%= product.pincode %></p>
+                                        <p class="phoneNumber"><%= product.phone_number %></p>
+                                    </div>
+                                    <div class="contents2">
+                                        <p class="price">Price: ₹<%= product.price %></p>
+                                        <p class="weight"><%= product.rentSale || 'N/A' %></p>
+                                        <button class="addToCart">Add To Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p class="no-products">No products found.</p>
+                <% } %>
+            </div>
+
+            <div class="pagination">
+                <% if (products.length > 0) { %>
+                    <% if (currentPage > 1) { %>
+                        <a href="?page=<%= currentPage - 1 %>" class="page-link">Previous</a>
+                    <% } %>
+
+                    <% for(let i = 1; i <= totalPages; i++) { %>
+                        <a href="?page=<%= i %>" class="page-link <%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+                    <% } %>
+
+                    <% if (currentPage < totalPages) { %>
+                        <a href="?page=<%= currentPage + 1 %>" class="page-link">Next</a>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
     </div>
 
     <div class="rowSearchResults3">
@@ -46,5 +95,115 @@
             </footer>
         </div>
     </div>
+
+    <script>
+        function filterProducts() {
+            const category = document.getElementById('categorySelect').value;
+            const products = document.querySelectorAll('.product-card');
+            
+            products.forEach(product => {
+                if (category === 'all' || product.dataset.category === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        function addToCart(itemName, price) {
+            const isLoggedIn = document.body.dataset.loggedIn === 'true';
+            if (isLoggedIn) {
+                fetch('/add-to-cart/crops', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        itemName: itemName,
+                        price: price
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Item added to cart successfully!');
+                    } else {
+                        alert('Failed to add item to cart.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding item to cart:', error);
+                    alert('Error adding item to cart.');
+                });
+            } else {
+                window.location.href = '/login';
+            }
+        }
+    </script>
+    <script>
+        document.querySelector(".search-container form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent full page reload
+            
+            const searchQuery = document.querySelector(".searchQuery").value.trim();
+    
+            fetch('/index', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ searchQuery })
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateSearchResults(data.products);
+            })
+            .catch(error => console.error('🔴 Error fetching search results:', error));
+        });
+    
+        function updateSearchResults(products) {
+            const resultsContainer = document.querySelector(".searchResults");
+            resultsContainer.innerHTML = ""; // Clear previous results
+
+            if (products.length === 0) {
+                resultsContainer.innerHTML = "<p class='no-products'>No products found.</p>";
+                return;
+            }
+
+            products.forEach(product => {
+                const entry = document.createElement("div");
+                entry.classList.add("entry");
+
+                // Handle null values properly
+                const company = product.company ? product.company : "N/A";
+                const bags = product.bags ? product.bags : "N/A";
+                const weight = product.weight ? `Weight: ${product.weight} kg` : "N/A";
+                const rentSale = product.rentSale ? product.rentSale : "";
+                const imagePath = product.image_path ? product.image_path : '/images/default.png';
+
+                entry.innerHTML = `
+                    <div class="content">
+                        <div class="imageContainer">
+                            <img src="${imagePath}" class="groceryImage" alt="${product.name}" />
+                        </div>
+                        <div class="resultText">
+                            <div class="contents1">
+                                <p class="heading">${product.name}</p>
+                                <p class="vendorName">${product.seller_name || "Unknown"}</p>
+                                <p class="address">${product.mandal || "Unknown"} - ${product.pincode || "000000"}</p>
+                                <p class="phoneNumber">${product.phone_number}</p>
+                            </div>
+                            <div class="contents2">
+                                <p class="price">Price: ₹${product.price}</p>
+                                <p class="company">Company: ${company}</p>
+                                <p class="bags">Bags: ${bags}</p>
+                                <p class="weight">${rentSale || weight}</p>
+                                <button class="addToCart" onclick="addToCart('${product.name}', ${product.price})">Add To Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultsContainer.appendChild(entry);
+            });
+        }
+    </script>    
 </body>
 </html>

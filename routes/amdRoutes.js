@@ -3,17 +3,10 @@ const router = express.Router();
 const multer = require('multer'); // For handling file uploads
 const path = require('path');
 const { db } = require('../index');
+const sharp = require('sharp'); 
 
 // Set storage engine for multer
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, path.join(__dirname, '..', 'public', 'images')); // Correct destination path
-    },
-    filename: function(req, file, cb) {
-        // Customize filename to avoid conflicts
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
+const storage = multer.memoryStorage();
 
 // Initialize multer upload
 const upload = multer({
@@ -51,47 +44,57 @@ const isLoggedIn = (req, res, next) => {
 };
 
 // Route for AMD Dashboard
-router.get('/ard', isLoggedIn, (req, res) => {
+router.get('/amd', isLoggedIn, (req, res) => {
     // Logic to render the AMD dashboard
     res.render('Amd_Dashboard', { isLoggedIn: true });
 });
 
-// Route to handle machinery upload form submission
-router.post('/upload/machinery', isLoggedIn, (req, res) => {
-    upload(req, res, (err) => {
+router.post('/upload/machinery', (req, res) => {
+    upload(req, res, async (err) => {
         if (err) {
             return res.status(400).send(err);
-        } else {
-            handleMachineryUpload(req, res);
+        }
+
+        if (!req.file) {
+            return res.status(400).send('No file uploaded.');
+        }
+
+        const { name, company, price, description, rentSale } = req.body;
+        const phone_number = req.session.user.phone_number;
+
+        if (!name || !company || !price || !description || !rentSale) {
+            return res.status(400).send('Missing data.');
+        }
+
+        // ✅ Define unique filename
+        const filename = `image-${Date.now()}.jpg`;
+        const imagePath = path.join(__dirname, '..', 'public', 'images', filename);
+
+        try {
+            // ✅ Resize & save image
+            await sharp(req.file.buffer)
+                .resize(300, 300) // Resize to 300x300 pixels
+                .toFormat('jpeg') // Convert to JPEG
+                .toFile(imagePath);
+
+            // ✅ Store image path in the database
+            const sql = 'INSERT INTO machinery (phone_number, name, company, price, description, rentSale, image_path) VALUES (?, ?, ?, ?, ?, ?)';
+            const values = [phone_number, name, company, price, description, rentSale, imagePath];
+
+            db.query(sql, values, (err, result) => {
+                if (err) {
+                    console.error('Error uploading machinery:', err);
+                    return res.status(500).json({ error: 'Internal server error' });
+                }
+
+                console.log('✅ machinery details inserted successfully.');
+                res.redirect('/farmer_upload'); // Redirect after upload
+            });
+        } catch (error) {
+            console.error('Error processing image:', error);
+            res.status(500).send('Image processing failed.');
         }
     });
 });
-
-function handleMachineryUpload(req, res) {
-    // Extract form data
-    const { name, company, price, description, rentSale } = req.body;
-    const phone_number = req.session.user.phone_number;
-    console.log(phone_number);
-    console.log(req.body);
-
-    if (!name || !company || !price || !description || !rentSale) {
-        return res.status(400).send('Missing data.');
-    }
-
-    // Insert the machinery data into the database
-    const sql = 'INSERT INTO machinery (phone_number, name, company, price, description, rentSale) VALUES (?, ?, ?, ?, ?, ?)';
-    const values = [phone_number, name, company, price, description, rentSale]; // Assuming req.file contains filename
-
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error uploading machinery:', err);
-            return res.status(500).json({ error: 'Internal server error' });
-        }
-        
-        // If the insertion is successful, redirect to a success page or render a success message
-        console.log('Machinery details inserted successfully.');
-        res.status(200).send('Machinery details received and inserted successfully.');
-    });
-}
 
 module.exports = router;

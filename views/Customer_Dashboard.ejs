@@ -7,24 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/reset.css">
     <link rel="stylesheet" href="./styles/style.css">
-    <title>Search Page</title>
+    <link rel="stylesheet" href="./styles/indexstyle.css">
+    <title>Customer Dashboard</title>
 </head>
 
 <body>
     <div class="rowInd1">
         <h1>FusionFarm</h1>
-        
     </div>
     <div class="rowInd2">
         <nav class="menu">
             <ul>
-                <li><a href="/customer/Vegitables">Vegitables</a></li>
-                <li><a href="/cart">cart</a></li>
+                <li><a href="/customer/Vegitables">Vegetables</a></li>
+                <li><a href="/cart">Cart</a></li>
             </ul>
             <% if (isLoggedIn) { %>
                 <div class="new_div">
                     <button id="loginButton"><a href="/profile">Profile</a></button>
-                    <button id="registerButton"><a href="/login">Log out</a></button> 
+                    <button id="registerButton"><a href="/logout">Log out</a></button> 
                 </div>
             <% } else { %>
                 <div class="new_div">
@@ -34,12 +34,61 @@
             <% } %>
         </nav>
     </div>    
-    <div class="rowInd3">
-        <form action="/showResults" method="post">
+    <div class="search-container">
+        <form action="/customer" method="post">
             <input type="text" class="searchQuery" name="searchQuery" placeholder="Search" required>
             <button type="submit" class="searchSubmitButton">Search</button>
         </form>
     </div>
+
+    <div class="rowSearchResults rowSearchResults2">
+        <div class="container">
+                <div class="filters"></div>
+            <% if (typeof products !== 'undefined' && products.length > 0) { %>
+                <div class="searchResults">
+                    <% products.forEach(product => { %>
+                        <div class="entry">
+                            <div class="content">
+                                <div class="imageContainer">
+                                    <img src="<%= (product.image_path && typeof product.image_path === 'string') ? product.image_path : '/images/default.png' %>" class="groceryImage" />
+                                </div>
+                                <div class="resultText">
+                                    <div class="contents1">
+                                        <p class="heading"><%= product.name %></p>
+                                        <p class="vendorName"><%= product.seller_name %></p>
+                                        <p class="address"><%= product.mandal %> - <%= product.pincode %></p>
+                                        <p class="phoneNumber"><%= product.phone_number %></p>
+                                    </div>
+                                    <div class="contents2">
+                                        <p class="price">Price: ₹<%= product.price %></p>
+                                        <p class="weight">Weight: <%= product.quantity %> kg</p>
+                                        <button class="addToCart">Add To Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+                
+                <div class="pagination">
+                    <% if (currentPage > 1) { %>
+                        <a href="?page=<%= currentPage - 1 %>" class="page-link">Previous</a>
+                    <% } %>
+                    
+                    <% for(let i = 1; i <= totalPages; i++) { %>
+                        <a href="?page=<%= i %>" class="page-link <%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+                    <% } %>
+                    
+                    <% if (currentPage < totalPages) { %>
+                        <a href="?page=<%= currentPage + 1 %>" class="page-link">Next</a>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <p class="no-products">No products found.</p>
+            <% } %>
+        </div>
+    </div>
+
     <div class="rowSearchResults3">
         <div class="store">
             <footer class="footer">
@@ -50,6 +99,128 @@
             </footer>
         </div>
     </div>
-</body>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".addToCart").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    const productCard = event.target.closest(".entry");
+        
+                    if (!productCard) {
+                        console.error("🔴 Error: Product card not found.");
+                        return;
+                    }
+        
+                    const itemNameElement = productCard.querySelector(".heading");
+                    const priceElement = productCard.querySelector(".price");
+        
+                    if (!itemNameElement || !priceElement) {
+                        console.error("🔴 Error: Item name or price element missing.");
+                        return;
+                    }
+        
+                    const itemName = itemNameElement.innerText.trim();
+                    const priceText = priceElement.innerText.trim();
+        
+                    console.log("🟢 Extracted itemName:", itemName);
+                    console.log("🟢 Extracted priceText:", priceText);
+        
+                    // Extract numeric price value (₹ symbol handling)
+                    const price = priceText.replace("Price: ₹", "").trim();
+        
+                    if (!itemName || !price) {
+                        console.error("🔴 Error: Missing itemName or price before sending request.");
+                        return;
+                    }
+        
+                    const requestBody = JSON.stringify({ itemName, price });
+                    console.log("🟢 Sending to Backend:", requestBody); // ✅ Check payload
+        
+                    fetch('/addToCart/crop', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: requestBody
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert("❌ Error: " + data.error);
+                        } else {
+                            alert("✅ Item added to cart successfully!");
+                        }
+                    })
+                    .catch(error => console.error('🔴 Fetch Error:', error));
+                });
+            });
+        });
+    </script> 
+    <script>
+        document.querySelector(".search-container form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent full page reload
+            
+            const searchQuery = document.querySelector(".searchQuery").value.trim();
+    
+            fetch('/customer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ searchQuery })
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateSearchResults(data.products);
+            })
+            .catch(error => console.error('🔴 Error fetching search results:', error));
+        });
+    
+        function updateSearchResults(products) {
+            const resultsContainer = document.querySelector(".searchResults");
+            resultsContainer.innerHTML = ""; // Clear previous results
+
+            if (products.length === 0) {
+                resultsContainer.innerHTML = "<p class='no-products'>No products found.</p>";
+                return;
+            }
+
+            products.forEach(product => {
+                const entry = document.createElement("div");
+                entry.classList.add("entry");
+
+                // Handle null values properly
+                const company = product.company ? product.company : "N/A";
+                const bags = product.bags ? product.bags : "N/A";
+                const weight = product.weight ? `Weight: ${product.weight} kg` : "N/A";
+                const rentSale = product.rentSale ? product.rentSale : "";
+                const imagePath = product.image_path ? product.image_path : '/images/default.png';
+
+                entry.innerHTML = `
+                    <div class="content">
+                        <div class="imageContainer">
+                            <img src="${imagePath}" class="groceryImage" alt="${product.name}" />
+                        </div>
+                        <div class="resultText">
+                            <div class="contents1">
+                                <p class="heading">${product.name}</p>
+                                <p class="vendorName">${product.seller_name || "Unknown"}</p>
+                                <p class="address">${product.mandal || "Unknown"} - ${product.pincode || "000000"}</p>
+                                <p class="phoneNumber">${product.phone_number}</p>
+                            </div>
+                            <div class="contents2">
+                                <p class="price">Price: ₹${product.price}</p>
+                                <p class="company">Company: ${company}</p>
+                                <p class="bags">Bags: ${bags}</p>
+                                <p class="weight">${rentSale || weight}</p>
+                                <button class="addToCart" onclick="addToCart('${product.name}', ${product.price})">Add To Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultsContainer.appendChild(entry);
+            });
+        }
+    </script>
+</body>
 </html>

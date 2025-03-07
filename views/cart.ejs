@@ -31,8 +31,27 @@
         th {
             background-color: #f2f2f2;
         }
-    </style>
 
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #008000;
+            padding: 0;
+        }
+
+        .menu{
+            display: flex;
+            margin-right: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.25rem;
+            margin: 2px;
+        }
+
+    </style>
 </head>
 <body>
     <header>
@@ -41,8 +60,9 @@
     <div class="rowInd2">
         <nav class = "menu">
             <ul>
-                <li><a href=""></a></li>
+                <a href="<%= homePage %>"> Home</a> 
             </ul>
+            <a href="/logout"> Logout</a>
         </nav>
     </div>
     <main>
@@ -64,6 +84,13 @@
                             <td><%= cart[i].item_name %></td>
                             <td><%= cart[i].price %></td>
                             <td><%= new Date(cart[i].date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %></td>
+                            <td>
+                                <!-- Remove button sends a POST request to /cart/remove -->
+                                <form action="/cart/remove" method="POST" style="display:inline;">
+                                    <input type="hidden" name="item_name" value="<%= cart[i].item_name %>">
+                                    <button type="submit" style="background-color: 008000; color: white; border: none; padding: 5px; cursor: pointer; width: 200px; height: 50px;">Remove</button>
+                                </form>
+                            </td>
                         </tr>
                         <% totalPrice += cart[i].price; %>
                     <% } %>                

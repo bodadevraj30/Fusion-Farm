@@ -3,17 +3,10 @@ const router = express.Router();
 const multer = require('multer'); // For handling file uploads
 const path = require('path');
 const { db } = require('../index');
+const sharp = require('sharp'); 
 
 // Set storage engine for multer
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, path.join(__dirname, '..', 'public', 'images')); // Correct destination path
-    },
-    filename: function(req, file, cb) {
-        // Customize filename to avoid conflicts
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
+const storage = multer.memoryStorage();
 
 
 // Initialize multer upload
@@ -58,115 +51,110 @@ router.get('/ard', isLoggedIn, (req, res) => {
 });
 
 // Route for handling seed upload
+async function handleImageUpload(req) {
+    if (!req.file) {
+        throw new Error('No file uploaded.');
+    }
+
+    // ✅ Define unique filename
+    const filename = `image-${Date.now()}.jpg`;
+    const imagePath = path.join(__dirname, '..', 'public', 'images', filename);
+
+    // ✅ Resize & save image
+    await sharp(req.file.buffer)
+        .resize(300, 300) // Resize to 300x300 pixels
+        .toFormat('jpeg') // Convert to JPEG
+        .toFile(imagePath);
+
+    return `/images/${filename}`; // ✅ Return the stored image path
+}
+
+// ✅ Generic function to insert product data into the database
+async function insertProduct(req, res, tableName, columns, values) {
+    try {
+        const sql = `INSERT INTO ${tableName} (${columns.join(', ')}) VALUES (${columns.map(() => '?').join(', ')})`;
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error(`Error inserting ${tableName} details:`, err);
+                return res.status(500).send('Internal Server Error');
+            }
+            console.log(`${tableName} details inserted successfully.`);
+            res.status(200).send(`${tableName} details received and inserted successfully.`);
+        });
+    } catch (error) {
+        console.error('Error processing request:', error);
+        res.status(500).send('Request processing failed.');
+    }
+}
+
+// ✅ Route to upload SEEDS
 router.post('/upload/seeds', isLoggedIn, (req, res) => {
-    // Handle file upload
-    upload(req, res, (err) => {
-        if (err) {
-            res.status(400).send(err);
-        } else {
-            // Extract data from the request body
-            const { name, company, price, weight, bags, description } = req.body;
-            const seedImage = req.file; // Uploaded image
-            const phone_number = req.session.user.phone_number; // Get phone_number from session
+    upload(req, res, async (err) => {
+        if (err) return res.status(400).send(err);
 
-            // Check if all required fields are provided
-            if (!name || !company || !price || !weight) {
-                return res.status(400).send('All fields except bags are required.');
-            }
+        const { name, company, price, weight, bags, description } = req.body;
+        const phone_number = req.session.user.phone_number;
 
-            // Logic to insert seed data into the 'seeds' table in the database
-            const sql = `
-                INSERT INTO seeds (phone_number, name, company, price, weight, bags)
-                VALUES (?, ?, ?, ?, ?, ?)
-            `;
-            const values = [phone_number, name, company, price, weight, bags, description];
+        if (!name || !company || !price || !weight) {
+            return res.status(400).send('All fields except bags are required.');
+        }
 
-            // Execute the SQL query
-            db.query(sql, values, (err, result) => {
-                if (err) {
-                    console.error('Error inserting seed details:', err);
-                    res.status(500).send('Internal Server Error');
-                    return;
-                }
-                console.log('Seed details inserted successfully.');
-                res.status(200).send('Seed details received and inserted successfully.');
-            });
+        try {
+            const imagePath = await handleImageUpload(req);
+            await insertProduct(req, res, 'seeds', 
+                ['phone_number', 'name', 'company', 'price', 'weight', 'bags', 'description', 'image_path'],
+                [phone_number, name, company, price, weight, bags || null, description || null, imagePath]
+            );
+        } catch (error) {
+            res.status(500).send(error.message);
         }
     });
 });
 
-// Route for handling pesticide upload
+// ✅ Route to upload PESTICIDES
 router.post('/upload/pesticides', isLoggedIn, (req, res) => {
-    // Handle file upload
-    upload(req, res, (err) => {
-        if (err) {
-            res.status(400).send(err);
-        } else {
-            // Extract data from the request body
-            const { name, company, price, weight, bags, description } = req.body;
-            const phone_number = req.session.user.phone_number; // Get phone_number from session
-            const pesticideFile = req.file; // Uploaded file
+    upload(req, res, async (err) => {
+        if (err) return res.status(400).send(err);
 
-            // Check if all required fields are provided
-            if (!name || !company || !price || !weight) {
-                return res.status(400).send('All fields except bags are required.');
-            }
+        const { name, company, price, weight, bags, description } = req.body;
+        const phone_number = req.session.user.phone_number;
 
-            // Logic to handle pesticide data insertion into the database
-            const sql = `
-                INSERT INTO pesticides (phone_number, name, company, price, weight, bags, description)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            `;
-            const values = [phone_number, name, company, price, weight, bags, description];
+        if (!name || !company || !price || !weight) {
+            return res.status(400).send('All fields except bags are required.');
+        }
 
-            // Execute the SQL query
-            db.query(sql, values, (err, result) => {
-                if (err) {
-                    console.error('Error inserting pesticide details:', err);
-                    res.status(500).send('Internal Server Error');
-                    return;
-                }
-                console.log('Pesticide details inserted successfully.');
-                res.status(200).send('Pesticide details received and inserted successfully.');
-            });
+        try {
+            const imagePath = await handleImageUpload(req);
+            await insertProduct(req, res, 'pesticides', 
+                ['phone_number', 'name', 'company', 'price', 'weight', 'bags', 'description', 'image_path'],
+                [phone_number, name, company, price, weight, bags || null, description || null, imagePath]
+            );
+        } catch (error) {
+            res.status(500).send(error.message);
         }
     });
 });
 
-// Route for handling fertilizer upload
+// ✅ Route to upload FERTILIZERS
 router.post('/upload/fertilizers', isLoggedIn, (req, res) => {
-    // Handle file upload
-    upload(req, res, (err) => {
-        if (err) {
-            res.status(400).send(err);
-        } else {
-            // Extract data from the request body
-            const { name, company, price, weight, bags, description } = req.body;
-            const fertilizerFile = req.file; // Uploaded file
-            const phone_number = req.session.user.phone_number; // Get phone_number from session
+    upload(req, res, async (err) => {
+        if (err) return res.status(400).send(err);
 
-            // Check if all required fields are provided
-            if (!name || !company || !price || !weight) {
-                return res.status(400).send('All fields except bags are required.');
-            }
+        const { name, company, price, weight, bags, description } = req.body;
+        const phone_number = req.session.user.phone_number;
 
-            // Logic to handle fertilizer data insertion into the database
-            const sql = `
-                INSERT INTO fertilizers (phone_number, name, company, price, weight, bags, description)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            `;
-            const values = [phone_number, name, company, price, weight, bags, description];
+        if (!name || !company || !price || !weight) {
+            return res.status(400).send('All fields except bags are required.');
+        }
 
-            // Execute the SQL query
-            db.query(sql, values, (err, result) => {
-                if (err) {
-                    console.error('Error inserting fertilizer details:', err);
-                    res.status(500).send('Internal Server Error');
-                    return;
-                }
-                console.log('Fertilizer details inserted successfully.');
-                res.status(200).send('Fertilizer details received and inserted successfully.');
-            });
+        try {
+            const imagePath = await handleImageUpload(req);
+            await insertProduct(req, res, 'fertilizers', 
+                ['phone_number', 'name', 'company', 'price', 'weight', 'bags', 'description', 'image_path'],
+                [phone_number, name, company, price, weight, bags || null, description || null, imagePath]
+            );
+        } catch (error) {
+            res.status(500).send(error.message);
         }
     });
 });
